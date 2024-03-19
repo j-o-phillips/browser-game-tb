@@ -21,6 +21,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "misc/Overworld.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "misc/Overworld.js", "components/map/system/system.jsx", "components/map/system/sun.jsx"],
   "exclude": ["node_modules"]
 }
