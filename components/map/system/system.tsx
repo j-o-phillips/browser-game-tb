@@ -16,6 +16,7 @@ import { useLoader } from "@react-three/fiber";
 const SystemMap = () => {
   const sunMap = useLoader(TextureLoader, "/planetText/sun.jpg");
   const planet1Map = useLoader(TextureLoader, "/planetText/planet1.jpg");
+  const planet2Map = useLoader(TextureLoader, "/planetText/planet2.jpg");
   return (
     <>
       {/* <Perf position="top-left" /> */}
@@ -35,7 +36,20 @@ const SystemMap = () => {
         emissive={0xfcba03}
         emissiveIntensity={0.2}
       />
-      <CelestialBody texture={planet1Map} positionX={4} />
+      <CelestialBody
+        texture={planet1Map}
+        positionX={4}
+        positionZ={8}
+        scale={1.3}
+      />
+      <CelestialBody
+        texture={planet2Map}
+        positionX={-10}
+        positionZ={-5}
+        scale={0.8}
+      />
+      <gridHelper args={[50, 10, "gray", "gray"]} />
+      <axesHelper args={[5]} />
     </>
   );
 };

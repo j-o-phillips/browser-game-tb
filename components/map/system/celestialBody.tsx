@@ -1,5 +1,6 @@
 "use client";
 
+import { useThree } from "@react-three/fiber";
 import { useRef } from "react";
 import { Color } from "three";
 
@@ -8,6 +9,8 @@ type CelestialBodyProps = {
   emissive?: number;
   emissiveIntensity?: number;
   positionX?: number;
+  positionZ?: number;
+  scale?: number;
 };
 
 const CelestialBody = ({
@@ -15,12 +18,32 @@ const CelestialBody = ({
   emissive,
   emissiveIntensity,
   positionX,
+  positionZ,
+  scale,
 }: CelestialBodyProps) => {
-  const sunMesh = useRef();
+  const { gl } = useThree();
+
+  const handleSelect = () => {
+    console.log("null");
+  };
 
   return (
     <>
-      <mesh ref={sunMesh} position-x={positionX}>
+      <mesh
+        position-x={positionX}
+        position-z={positionZ}
+        scale={scale}
+        onClick={(e) => {
+          e.stopPropagation();
+          handleSelect();
+        }}
+        onPointerEnter={() => {
+          gl.domElement.style.cursor = "pointer";
+        }}
+        onPointerLeave={() => {
+          gl.domElement.style.cursor = "default";
+        }}
+      >
         <sphereGeometry />
         <meshStandardMaterial
           map={texture}
