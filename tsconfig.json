@@ -21,6 +21,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "misc/Overworld.js", "components/map/system/system.tsx", "components/map/system/celestialbODY.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "misc/Overworld.js", "components/map/system/system.tsx", "components/map/system/celestialbODY.jsx", "devActions/systems.js", "devActions/planets.js"],
   "exclude": ["node_modules"]
 }

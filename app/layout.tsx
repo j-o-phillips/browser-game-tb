@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/navbar/navbar";
+import { UserProvider } from "@/context/UserContext";
+import { SessionProvider } from "next-auth/react";
+import LogoutButton from "@/components/navbar/LogoutButton";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,10 +20,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <Navbar />
-        <div>{children}</div>
-      </body>
+      <UserProvider>
+        <body className={inter.className}>
+          <LogoutButton />
+          <div>{children}</div>
+        </body>
+      </UserProvider>
     </html>
   );
 }

@@ -39,6 +39,7 @@ const LoginForm = () => {
       if (callback?.ok) {
         router.push("/game");
         router.refresh();
+        console.log(callback);
       }
 
       if (callback?.error) {

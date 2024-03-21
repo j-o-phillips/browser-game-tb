@@ -1,5 +1,11 @@
+import GameClient from "@/components/GameClient";
+
 const Game = () => {
-  return <div></div>;
+  return (
+    <div>
+      <GameClient />
+    </div>
+  );
 };
 
 export default Game;
