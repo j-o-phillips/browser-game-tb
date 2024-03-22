@@ -13,7 +13,9 @@ export async function GET(request: Request) {
     const session = await getSession();
 
     if (!session?.user?.email) {
-      return NextResponse.json({ message: "An error occured" });
+      return NextResponse.json({
+        message: "An error occured with the session or user or email",
+      });
     }
 
     const currentUser = await db.user.findUnique({
@@ -28,6 +30,6 @@ export async function GET(request: Request) {
 
     return NextResponse.json(currentUser);
   } catch (error: any) {
-    return NextResponse.json({ message: "An error occured" });
+    return NextResponse.json({ error: error.message });
   }
 }
