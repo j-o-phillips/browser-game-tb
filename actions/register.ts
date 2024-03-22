@@ -28,6 +28,7 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
       name: username,
       email,
       hashedPassword,
+      currentPos: [5, 5],
     },
   });
 

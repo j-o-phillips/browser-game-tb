@@ -18,14 +18,9 @@ import { object } from "zod";
 type SystemMapProps = {
   objectData: MapObjectData | undefined;
   setObjectData: Dispatch<SetStateAction<MapObjectData | undefined>>;
-  travelling: boolean;
 };
 
-const SystemMap = ({
-  setObjectData,
-  objectData,
-  travelling,
-}: SystemMapProps) => {
+const SystemMap = ({ setObjectData, objectData }: SystemMapProps) => {
   const sunMap = useLoader(TextureLoader, "/planetText/sun.jpg");
   const planet1Map = useLoader(TextureLoader, "/planetText/planet1.jpg");
   const planet2Map = useLoader(TextureLoader, "/planetText/planet2.jpg");
@@ -43,7 +38,7 @@ const SystemMap = ({
         saturation={0}
         fade
       />
-      <PlayerMarker objectData={objectData} travelling={travelling} />
+      <PlayerMarker objectData={objectData} />
       <CelestialBody
         name="Sun"
         texture={sunMap}

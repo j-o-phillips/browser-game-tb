@@ -8,10 +8,9 @@ import { MathUtils, Mesh, Vector2, Vector3 } from "three";
 
 type playerMarkerProps = {
   objectData: MapObjectData | undefined;
-  travelling: boolean;
 };
 
-const PlayerMarker = ({ objectData, travelling }: playerMarkerProps) => {
+const PlayerMarker = ({ objectData }: playerMarkerProps) => {
   const bodyRef = useRef<Mesh>(null!);
 
   const currentPos = new Vector2(5, 5);
@@ -31,11 +30,11 @@ const PlayerMarker = ({ objectData, travelling }: playerMarkerProps) => {
   console.log(direction);
 
   useFrame((state, delta) => {
-    if (travelling) {
-      bodyRef.current.position.x -= ((direction.x / 3) * delta) / distance;
-      bodyRef.current.position.z -= ((direction.y / 3) * delta) / distance;
-      console.log(bodyRef.current.position.z);
-    }
+    // if (travelling) {
+    //   bodyRef.current.position.x -= ((direction.x / 3) * delta) / distance;
+    //   bodyRef.current.position.z -= ((direction.y / 3) * delta) / distance;
+    //   console.log(bodyRef.current.position.z);
+    // }
   });
 
   return (

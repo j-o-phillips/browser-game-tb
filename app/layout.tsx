@@ -5,6 +5,7 @@ import Navbar from "@/components/navbar/navbar";
 import { UserProvider } from "@/context/UserContext";
 import { SessionProvider } from "next-auth/react";
 import LogoutButton from "@/components/navbar/LogoutButton";
+import { GlobalProvider } from "@/context/GlobalContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,12 +21,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <UserProvider>
-        <body className={inter.className}>
-          <LogoutButton />
-          <div>{children}</div>
-        </body>
-      </UserProvider>
+      <GlobalProvider>
+        <UserProvider>
+          <body className={inter.className}>
+            <LogoutButton />
+            <div>{children}</div>
+          </body>
+        </UserProvider>
+      </GlobalProvider>
     </html>
   );
 }

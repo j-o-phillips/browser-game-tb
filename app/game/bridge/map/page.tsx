@@ -9,7 +9,6 @@ import { Vector2 } from "three";
 
 const Map = () => {
   const [objectData, setObjectData] = useState<MapObjectData | undefined>();
-  const [travelling, setTravelling] = useState(false);
 
   return (
     <div
@@ -18,13 +17,9 @@ const Map = () => {
         height: "100vh",
       }}
     >
-      <MapOverlay objectData={objectData} setTravelling={setTravelling} />
+      <MapOverlay objectData={objectData} />
       <Canvas camera={{ position: [0, 40, 50], fov: 25 }}>
-        <SystemMap
-          setObjectData={setObjectData}
-          objectData={objectData}
-          travelling={travelling}
-        />
+        <SystemMap setObjectData={setObjectData} objectData={objectData} />
       </Canvas>
     </div>
   );
