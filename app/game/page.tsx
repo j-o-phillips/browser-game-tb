@@ -1,9 +1,14 @@
+"use client";
+
 import GameClient from "@/components/GameClient";
+import { SessionProvider } from "next-auth/react";
 
 const Game = () => {
   return (
     <div>
-      <GameClient />
+      <SessionProvider>
+        <GameClient />
+      </SessionProvider>
     </div>
   );
 };

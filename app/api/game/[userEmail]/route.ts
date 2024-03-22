@@ -2,25 +2,18 @@ import { getServerSession } from "next-auth/next";
 
 import { authOptions } from "@/lib/authOptions";
 import { db } from "@/lib/db";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-async function getSession() {
-  return await getServerSession(authOptions);
-}
-
-export async function GET(request: Request) {
+export async function GET(
+  request: Request,
+  { params }: { params: { userEmail: string } }
+) {
   try {
-    const session = await getSession();
-
-    if (!session?.user?.email) {
-      return NextResponse.json({
-        message: "An error occured with the session or user or email",
-      });
-    }
+    const email = params.userEmail;
 
     const currentUser = await db.user.findUnique({
       where: {
-        email: session.user.email as string,
+        email: email,
       },
     });
 
