@@ -4,7 +4,7 @@ import { authOptions } from "@/lib/authOptions";
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 
-export async function getSession() {
+async function getSession() {
   return await getServerSession(authOptions);
 }
 

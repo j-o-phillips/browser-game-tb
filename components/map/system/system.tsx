@@ -1,11 +1,10 @@
 import { OrbitControls, Stars } from "@react-three/drei";
 import CelestialBody from "./celestialBody";
-import { TextureLoader } from "three/src/loaders/TextureLoader";
+import { TextureLoader } from "three/src/loaders/TextureLoader.js";
 import { useLoader } from "@react-three/fiber";
 import PlayerMarker from "./playerMarker";
 import { Dispatch, SetStateAction } from "react";
 import { MapObjectData } from "@/types";
-import { object } from "zod";
 
 // import Planet1 from "./planets/Planet1";
 // import Planet2 from "./planets/Planet2";
