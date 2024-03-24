@@ -10,7 +10,7 @@ const MarketPage = () => {
 
   useEffect(() => {
     getMarketData(marketName).then((data) => {
-      setMarketData(data);
+      // setMarketData(data);
     });
   });
   return (
