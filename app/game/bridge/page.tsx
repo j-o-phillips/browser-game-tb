@@ -1,6 +1,7 @@
 "use client";
 
-import BridgeConsole from "@/components/bridge/console";
+import BridgeView from "@/components/bridge/bridgeView";
+
 import { Button } from "@/components/ui/button";
 import { useGlobalContext } from "@/context/GlobalContext";
 import { useUserContext } from "@/context/UserContext";
@@ -80,8 +81,6 @@ const Bridge = () => {
   //   </div>
   // );
 
-  const [FPCenabled, setFPCenabled] = useState<boolean>(true);
-
   return (
     <div
       className="overlow-hidden   w-full"
@@ -91,18 +90,11 @@ const Bridge = () => {
     >
       <Canvas
         camera={{
-          position: [0, 0, 15],
+          position: [0, 0, 30],
           fov: 25,
         }}
       >
-        <ambientLight intensity={3} />
-
-        <FirstPersonControls
-          lookSpeed={0.02}
-          enabled={FPCenabled}
-          lookVertical={false}
-        />
-        <BridgeConsole setFPCenabled={setFPCenabled} FPCenabled={FPCenabled} />
+        <BridgeView />
       </Canvas>
     </div>
   );

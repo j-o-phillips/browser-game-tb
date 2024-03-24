@@ -1,6 +1,7 @@
 "use client";
 
 import { MapObjectData } from "@/types";
+import { Html } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { Dispatch, SetStateAction, useRef } from "react";
 import { Mesh } from "three";

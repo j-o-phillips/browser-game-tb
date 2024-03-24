@@ -1,10 +1,13 @@
-import { OrbitControls, Stars } from "@react-three/drei";
+import { Html, OrbitControls, Stars, Text } from "@react-three/drei";
 import CelestialBody from "./celestialBody";
 import { TextureLoader } from "three/src/loaders/TextureLoader.js";
 import { useLoader } from "@react-three/fiber";
 import PlayerMarker from "./playerMarker";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useRef } from "react";
 import { MapObjectData } from "@/types";
+import { Button } from "@/app/apfel/button";
+import { Container } from "@react-three/uikit";
+import { Camera, Object3D } from "three";
 
 // import Planet1 from "./planets/Planet1";
 // import Planet2 from "./planets/Planet2";
@@ -23,6 +26,7 @@ const SystemMap = ({ setObjectData, objectData }: SystemMapProps) => {
   const sunMap = useLoader(TextureLoader, "/planetText/sun.jpg");
   const planet1Map = useLoader(TextureLoader, "/planetText/planet1.jpg");
   const planet2Map = useLoader(TextureLoader, "/planetText/planet2.jpg");
+  const body = useRef();
   return (
     <>
       {/* <Perf position="top-left" /> */}
@@ -66,6 +70,7 @@ const SystemMap = ({ setObjectData, objectData }: SystemMapProps) => {
         rotationSpeed={0.5}
         setObjectData={setObjectData}
       />
+
       <gridHelper args={[50, 10, "gray", "gray"]} />
       <axesHelper args={[5]} />
     </>
