@@ -8,30 +8,62 @@ import {
 } from "@react-three/drei";
 
 import SystemMap from "../map/system/system";
-import { Dispatch, SetStateAction, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import MapScreen from "../map/mapScreen";
 import { MapObjectData } from "@/types";
 import MapComputer from "../map/mapComputer";
+import MainConsoleComputer from "./mainConsole/mainConsoleComputer";
 
 const BridgeView = () => {
-  const [FPCenabled, setFPCenabled] = useState<boolean>(true);
-  const [cameraPos, setCameraPos] = useState<number[]>([0, 0, 30]);
+  const [mapCameraEnabled, setMapCameraEnabled] = useState<boolean>(false);
+  const [consoleCameraEnabled, setConsoleCameraEnabled] =
+    useState<boolean>(false);
+  const [mapCameraPos, setMapCameraPos] = useState<number[]>([0, 0, 30]);
+  //! Camera Updates
   useFrame((state) => {
-    if (!FPCenabled) {
-      state.camera.position.set(cameraPos[0], cameraPos[1], cameraPos[2]);
+    if (mapCameraEnabled) {
+      state.camera.position.set(
+        mapCameraPos[0],
+        mapCameraPos[1],
+        mapCameraPos[2]
+      );
       state.camera.lookAt(-8, 0, 0);
     }
+
+    if (consoleCameraEnabled) {
+      state.camera.position.set(
+        mapCameraPos[0],
+        mapCameraPos[1],
+        mapCameraPos[2]
+      );
+      state.camera.lookAt(4, 0, 0);
+    }
   });
+
+  //! Game state timer logic
+  useEffect(() => {
+    const timer = setInterval(() => {
+      console.log("state check");
+    }, 1000);
+  }, []);
   return (
     <>
       <FirstPersonControls
         lookSpeed={0.02}
-        enabled={FPCenabled}
+        movementSpeed={4}
+        enabled={!consoleCameraEnabled && !mapCameraEnabled}
         lookVertical={false}
       />
       <ambientLight intensity={3} />
-      <MapComputer setFPCenabled={setFPCenabled} setCameraPos={setCameraPos} />
+      <MapComputer
+        setMapCameraEnabled={setMapCameraEnabled}
+        setMapCameraPos={setMapCameraPos}
+      />
+      <MainConsoleComputer
+        setConsoleCameraEnabled={setConsoleCameraEnabled}
+        setMapCameraPos={setMapCameraPos}
+      />
     </>
   );
 };

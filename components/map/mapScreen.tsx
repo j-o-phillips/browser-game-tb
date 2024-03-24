@@ -1,6 +1,6 @@
 "use client";
 import SystemMap from "./system/system";
-import { useRef, useState } from "react";
+import { Dispatch, SetStateAction, useRef, useState } from "react";
 import { MapObjectData } from "@/types";
 import { useRouter } from "next/navigation";
 import { useGlobalContext } from "@/context/GlobalContext";
@@ -10,7 +10,12 @@ import { OrbitControls, Stars } from "@react-three/drei";
 import PlayerMarker from "./system/playerMarker";
 import CelestialBody from "./system/celestialBody";
 
-const MapScreen = () => {
+type MapScreenProps = {
+  objectData: MapObjectData | undefined;
+  setObjectData: Dispatch<SetStateAction<MapObjectData | undefined>>;
+};
+
+const MapScreen = ({ objectData, setObjectData }: MapScreenProps) => {
   const sunMap = useLoader(TextureLoader, "/planetText/sun.jpg");
   const planet1Map = useLoader(TextureLoader, "/planetText/planet1.jpg");
   const planet2Map = useLoader(TextureLoader, "/planetText/planet2.jpg");
@@ -25,7 +30,7 @@ const MapScreen = () => {
         radius={80}
         depth={50}
         count={5000}
-        factor={6}
+        factor={2}
         saturation={0}
         fade
       />

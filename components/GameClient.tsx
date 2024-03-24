@@ -31,7 +31,7 @@ const GameClient = () => {
   return (
     <div className="py-10">
       <Button onClick={onClick}>Log userData</Button>
-      <Button onClick={() => router.push("/game/bridge")}>To map</Button>
+      <Button onClick={() => router.push("/game/bridge")}>To Bridge</Button>
     </div>
   );
 };
