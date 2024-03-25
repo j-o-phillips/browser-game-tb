@@ -17,7 +17,8 @@ model User {
   emailVerified  DateTime?
   image          String?
   hashedPassword String?
-  currentPos     Int[]     @default([4, 4])
+  currentLoc     String    @default("Arubula")
+  currentPos     Int[]     @default([5, 10])
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
 }
@@ -36,10 +37,24 @@ model Market {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   name      String
   position  Int[]
-  resources Int
+  credits   Int      @default(10000)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   systemId  String?  @db.ObjectId
 
+  resources Resource[]
+
   System System? @relation(fields: [systemId], references: [id], onDelete: Cascade)
+}
+
+model Resource {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  baseValue Int
+  amount    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  marketId  String?  @db.ObjectId
+
+  Market Market? @relation(fields: [marketId], references: [id], onDelete: Cascade)
 }

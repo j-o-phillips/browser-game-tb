@@ -23,6 +23,10 @@ const GameClient = () => {
         console.log(error);
       }
     }
+
+    if (session.status === "unauthenticated") {
+      router.push("/auth/login");
+    }
   }, [session]);
 
   const onClick = () => {

@@ -10,10 +10,12 @@ const DevPage = () => {
   const [marketData, setMarketData] = useState({});
   const [systemData, setSystemData] = useState({});
 
-  const onCreateMarket = () => {
+  const onCreateMarket = (e) => {
+    e.preventDefault();
     console.log(marketData);
     addMarket(marketData).then((data) => {
       console.log(data.success);
+      console.log(data.error);
     });
   };
 
@@ -44,16 +46,27 @@ const DevPage = () => {
           />
           <input
             type="number"
-            name="position"
-            placeholder="position"
+            name="positionX"
+            placeholder="position x"
             onChange={(e) => {
               setMarketData((prev) => ({
                 ...prev,
-                position: e.target.value,
+                positionX: e.target.value,
               }));
             }}
           />
           <input
+            type="number"
+            name="positionY"
+            placeholder="position y"
+            onChange={(e) => {
+              setMarketData((prev) => ({
+                ...prev,
+                positionY: e.target.value,
+              }));
+            }}
+          />
+          {/* <input
             type="number"
             name="resources"
             placeholder="Resources"
@@ -63,7 +76,7 @@ const DevPage = () => {
                 resources: e.target.value,
               }));
             }}
-          />
+          /> */}
           <input
             type="text"
             name="systemId"
