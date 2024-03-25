@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { Rajdhani } from "next/font/google";
 import "./globals.css";
 import { UserProvider } from "@/context/UserContext";
 import { GlobalProvider } from "@/context/GlobalContext";
 
-const inter = Inter({ subsets: ["latin"] });
+const rajdhani = Rajdhani({ weight: "500", subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -20,7 +21,7 @@ export default function RootLayout({
     <html lang="en">
       <GlobalProvider>
         <UserProvider>
-          <body className={inter.className}>
+          <body className={rajdhani.className}>
             <div>{children}</div>
           </body>
         </UserProvider>

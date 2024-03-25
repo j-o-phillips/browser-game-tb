@@ -10,9 +10,7 @@ const DevPage = () => {
   const [marketData, setMarketData] = useState({});
   const [systemData, setSystemData] = useState({});
 
-  const onCreateMarket = (e) => {
-    e.preventDefault();
-    console.log(marketData);
+  const onCreateMarket = () => {
     addMarket(marketData).then((data) => {
       console.log(data.success);
       console.log(data.error);
