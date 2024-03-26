@@ -5,7 +5,14 @@ import { db } from "@/lib/db";
 import * as z from "zod";
 import bcrypt from "bcryptjs"; //or from bcrypt if you have errors
 
-import { getUserByEmail } from "@/actions/getUserByEmail";
+const getUserByEmail = async (email: string) => {
+  try {
+    const user = await db.user.findUnique({ where: { email } });
+    return user;
+  } catch {
+    return null;
+  }
+};
 
 export const register = async (values: z.infer<typeof RegisterSchema>) => {
   const validatedFields = RegisterSchema.safeParse(values);
@@ -28,6 +35,16 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
       name: username,
       email,
       hashedPassword,
+      ship: {
+        create: {
+          shipEngine: {
+            create: {},
+          },
+          shipCargoBay: {
+            create: {},
+          },
+        },
+      },
     },
   });
 

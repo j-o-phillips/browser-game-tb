@@ -17,10 +17,60 @@ model User {
   emailVerified  DateTime?
   image          String?
   hashedPassword String?
+  credits        Int       @default(2000)
   currentLoc     String    @default("Arubula")
   currentPos     Int[]     @default([5, 10])
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
+
+  ship Ship?
+}
+
+model Ship {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String   @default("Starter Ship")
+  maxHull     Int      @default(100)
+  currentHull Int      @default(100)
+  fuel        Int      @default(100)
+  price       Int      @default(10000)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  userId      String   @unique @db.ObjectId
+
+  shipEngine   ShipEngine?
+  shipCargoBay ShipCargoBay?
+
+  User User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model ShipEngine {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  name            String   @default("Basic Engine")
+  currentDamage   Int      @default(0) // 0 = perfect 100 = broken
+  fuelConsumption Int      @default(5)
+  speed           Int      @default(1)
+  price           Int      @default(5000)
+  maxJump         Int      @default(20)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  shipId          String   @unique @db.ObjectId
+
+  Ship Ship @relation(fields: [shipId], references: [id], onDelete: Cascade)
+}
+
+model ShipCargoBay {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  name          String   @default("Basic Cargo Bay")
+  currentDamage Int      @default(0) // 0 = perfect 100 = broken
+  maxCapacity   Int      @default(100)
+  price         Int      @default(5000)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  shipId        String   @unique @db.ObjectId
+
+  resources Resource[]
+
+  Ship Ship @relation(fields: [shipId], references: [id], onDelete: Cascade)
 }
 
 model System {
@@ -48,13 +98,15 @@ model Market {
 }
 
 model Resource {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  name      String
-  baseValue Int
-  amount    Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  marketId  String?  @db.ObjectId
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  name           String
+  baseValue      Int
+  amount         Int
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  marketId       String?  @db.ObjectId
+  shipCargoBayId String?  @db.ObjectId
 
-  Market Market? @relation(fields: [marketId], references: [id], onDelete: Cascade)
+  Market       Market?       @relation(fields: [marketId], references: [id], onDelete: Cascade)
+  ShipCargoBay ShipCargoBay? @relation(fields: [shipCargoBayId], references: [id], onDelete: Cascade)
 }

@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { useGlobalContext } from "@/context/GlobalContext";
 import { useUserContext } from "@/context/UserContext";
+import { calcFuelRequiredToDest } from "@/functions/equations";
 import { GlobalContextData, MapObjectData } from "@/types";
 import { useRouter } from "next/navigation";
 import { Dispatch, SetStateAction } from "react";
@@ -27,6 +28,10 @@ const MapOverlay = ({ objectData }: MapOverlayProps) => {
   );
 
   const distance = currentPos.distanceTo(targetPos);
+  const fuelRequired = calcFuelRequiredToDest(
+    distance,
+    userData?.ship?.shipEngine.fuelConsumption!
+  );
 
   const onSetCourse = () => {
     const data: GlobalContextData = {
@@ -34,6 +39,7 @@ const MapOverlay = ({ objectData }: MapOverlayProps) => {
       distanceToTarget: distance,
       targetPos: [objectData?.position[0] ?? 0, objectData?.position[1] ?? 0],
       targetName: objectData?.name ?? "",
+      fuelRequiredToDest: fuelRequired,
     };
     setGlobalData(data);
   };
@@ -52,7 +58,30 @@ const MapOverlay = ({ objectData }: MapOverlayProps) => {
             <h4>
               Position: {objectData.position[0]}, {objectData.position[1]}
             </h4>
-            <h4>Distance: {distance.toFixed(2)}</h4>
+            <h4>
+              Distance:{" "}
+              <span
+                className={
+                  distance > userData?.ship.shipEngine.maxJump!
+                    ? "text-red-500"
+                    : "text-white"
+                }
+              >
+                {distance.toFixed(2)}
+              </span>{" "}
+            </h4>
+            <h4>
+              Fuel Required:{" "}
+              <span
+                className={
+                  fuelRequired > userData?.ship.fuel!
+                    ? "text-red-500"
+                    : "text-white"
+                }
+              >
+                {fuelRequired.toFixed(2)} / {userData?.ship.fuel}
+              </span>
+            </h4>
             <Button onClick={onSetCourse}>Set Course</Button>
           </>
         )}

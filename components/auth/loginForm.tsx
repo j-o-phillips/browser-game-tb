@@ -20,6 +20,7 @@ import { useState } from "react";
 
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
+import Link from "next/link";
 
 const LoginForm = () => {
   const [error, setError] = useState<string | undefined>("");
@@ -60,7 +61,11 @@ const LoginForm = () => {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input placeholder="John@doe.com" {...field} />
+                  <Input
+                    placeholder="John@doe.com"
+                    {...field}
+                    className="bg-white"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -73,7 +78,12 @@ const LoginForm = () => {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input placeholder="******" {...field} type="password" />
+                  <Input
+                    placeholder="******"
+                    {...field}
+                    type="password"
+                    className="bg-white"
+                  />
                 </FormControl>
 
                 <FormMessage />
@@ -84,6 +94,7 @@ const LoginForm = () => {
         </form>
       </Form>
       {error}
+      <Link href="/auth/register">Register</Link>
     </div>
   );
 };

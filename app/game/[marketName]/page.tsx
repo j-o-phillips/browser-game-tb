@@ -15,19 +15,19 @@ const MarketPage = () => {
     });
   }, []);
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2">
-      <div className="h-[50vh]  w-full flex flex-col items-center py-2 ">
+    <div className="grid grid-cols-1 sm:grid-cols-2  sm:h-screen p-4 gap-4 text-primary-foreground">
+      <div className="h-full  w-full flex flex-col items-center py-2 ">
         <h2>Welcome to {marketName} spaceport</h2>
         <p>Description and details</p>
       </div>
-      <div className="h-[50vh]  w-full flex flex-col items-center py-2 ">
+      <div className="h-full]  w-full flex flex-col items-center py-2 ">
         <h2>{marketName}</h2>
         <h2>Planet/spaceport image</h2>
       </div>
-      <div className="h-[50vh]  w-full ">
+      <div>
         <MarketNav />
       </div>
-      <div className="h-[50vh]  w-full flex flex-col items-center gap-2 py-2">
+      <div className="h-full  w-full flex flex-col items-center gap-2 py-2">
         <h2>Something else</h2>
       </div>
     </div>

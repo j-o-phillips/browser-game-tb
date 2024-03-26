@@ -1,6 +1,7 @@
 "use server";
 
 import { db } from "@/lib/db";
+import { getUserById } from "./getUserById";
 
 export default async function updateUserLoc(
   userId: string,
@@ -8,7 +9,7 @@ export default async function updateUserLoc(
   pos: number[]
 ) {
   try {
-    const user = await db.user.update({
+    await db.user.update({
       where: {
         id: userId,
       },
@@ -18,6 +19,7 @@ export default async function updateUserLoc(
       },
     });
 
+    const user = await getUserById(userId);
     return user;
   } catch (error: any) {
     return error.message;

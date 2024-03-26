@@ -18,6 +18,7 @@ import { Button } from "../ui/button";
 import { RegisterSchema } from "@/schemas";
 import { register } from "@/actions/register";
 import { useState } from "react";
+import Link from "next/link";
 
 const RegisterForm = () => {
   const [error, setError] = useState<string | undefined>("");
@@ -53,7 +54,11 @@ const RegisterForm = () => {
               <FormItem>
                 <FormLabel>Username</FormLabel>
                 <FormControl>
-                  <Input placeholder="John Doe" {...field} />
+                  <Input
+                    placeholder="John Doe"
+                    {...field}
+                    className="bg-white"
+                  />
                 </FormControl>
                 <FormDescription>
                   This is your public display name.
@@ -69,7 +74,11 @@ const RegisterForm = () => {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input placeholder="John@doe.com" {...field} />
+                  <Input
+                    placeholder="John@doe.com"
+                    {...field}
+                    className="bg-white"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -82,7 +91,12 @@ const RegisterForm = () => {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input placeholder="******" {...field} type="password" />
+                  <Input
+                    placeholder="******"
+                    {...field}
+                    type="password"
+                    className="bg-white"
+                  />
                 </FormControl>
 
                 <FormMessage />
@@ -94,6 +108,7 @@ const RegisterForm = () => {
       </Form>
       {error}
       {success}
+      <Link href="/auth/login">Already have an account?</Link>
     </div>
   );
 };

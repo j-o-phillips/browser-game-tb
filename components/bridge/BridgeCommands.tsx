@@ -8,6 +8,8 @@ import { signOut } from "next-auth/react";
 import { useEffect } from "react";
 import updateUserLoc from "@/actions/updateUserLoc";
 import TravellingModal from "./travellingModal";
+import { validateFuelAndJumpDist } from "@/functions/misc";
+import Card from "@/customUi/Card";
 
 const BridgeCommands = () => {
   const router = useRouter();
@@ -23,8 +25,21 @@ const BridgeCommands = () => {
   const handleTravel = () => {
     //update user data in db
     if (!globalData.targetName) {
-      return null; //message user that there is no target
+      return console.log("No target"); //message user that there is no target
     }
+    //fuel and engine validation
+    const journeyIsNotValid = validateFuelAndJumpDist(
+      userData?.ship.fuel!,
+      userData?.ship.shipEngine.maxJump!,
+      globalData?.fuelRequiredToDest!,
+      globalData?.distanceToTarget!
+    );
+
+    if (journeyIsNotValid) {
+      console.log(journeyIsNotValid);
+      return journeyIsNotValid;
+    }
+
     if (userData) {
       try {
         setGlobalData({ ...globalData, isTravelling: true });
@@ -58,7 +73,7 @@ const BridgeCommands = () => {
 
   return (
     <>
-      <div className=" flex flex-col items-center gap-2 py-2">
+      <Card>
         <h2>Commands</h2>
         <Button onClick={() => console.log(userData)}>Log user context</Button>
         <Button onClick={() => console.log(globalData)}>
@@ -66,6 +81,9 @@ const BridgeCommands = () => {
         </Button>
         <hr className="w-2/3" />
         <Button onClick={handleTravel}>Launch</Button>
+        <Button onClick={() => router.push(`/game/${userData?.currentLoc}`)}>
+          Dock at Spaceport
+        </Button>
 
         <Button
           onClick={() => {
@@ -74,7 +92,7 @@ const BridgeCommands = () => {
         >
           Retire to quarters (logout)
         </Button>
-      </div>
+      </Card>
       {globalData.isTravelling && <TravellingModal />}
     </>
   );

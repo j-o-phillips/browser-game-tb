@@ -1,11 +1,19 @@
 "use client";
 
-import { User } from "@prisma/client";
+import { Resource, Ship, ShipCargoBay, ShipEngine, User } from "@prisma/client";
 import { createContext, useContext, useState } from "react";
 
+type UserData = User & {
+  ship: Ship & {
+    shipEngine: ShipEngine;
+    shipCargoBay: ShipCargoBay & {
+      resources: Resource[];
+    };
+  };
+};
 export type UserContent = {
-  userData: User | null;
-  setUserData: (c: User) => void;
+  userData: UserData | null;
+  setUserData: (c: UserData) => void;
 };
 
 const UserContext = createContext<UserContent>({
@@ -16,7 +24,7 @@ const UserContext = createContext<UserContent>({
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [userData, setUserData] = useState<User | null>(null);
+  const [userData, setUserData] = useState<UserData | null>(null);
   return (
     <UserContext.Provider value={{ userData, setUserData }}>
       {children}

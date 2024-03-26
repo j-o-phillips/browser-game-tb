@@ -1,38 +1,33 @@
 "use client";
 
 import { getMarketData } from "@/actions/getMarketData";
-import { Market } from "@prisma/client";
-import { useParams } from "next/navigation";
+import BuyScreen from "@/components/market/marketPlace/buy";
+import SellScreen from "@/components/market/marketPlace/sell";
+
+import { Button } from "@/components/ui/button";
+import { useGlobalContext } from "@/context/GlobalContext";
+import { useUserContext } from "@/context/UserContext";
+import Card from "@/customUi/Card";
+import { MarketData } from "@/types";
+
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const MarketPlace = () => {
-  //!REPLACE ANY WITH MARKETPLACE DATA
-  const [marketData, setMarketData] = useState<any>();
-  const { marketName } = useParams() as { marketName: string };
+  const router = useRouter();
+  const { globalData, setGlobalData } = useGlobalContext();
+  const { userData, setUserData } = useUserContext();
 
   useEffect(() => {
-    getMarketData(marketName).then((data) => {
-      setMarketData(data);
-      console.log(data);
-    });
-  }, []);
+    if (!userData) {
+      router.push("/game");
+    }
+  }, [userData]);
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 py-10">
-      <div className="h-[50vh]  w-full flex flex-col items-center py-2 ">
-        <h2>Sell</h2>
-        <p>Description and details</p>
-      </div>
-
-      <div className="h-[50vh]  w-full flex flex-col items-center gap-2 py-2">
-        <h2>Buy</h2>
-        {marketData?.resources?.map((resource: any) => (
-          <div key={resource.id}>
-            {resource.name}, price: {resource.baseValue}, amount:{" "}
-            {resource.amount}
-          </div>
-        ))}
-      </div>
+    <div className="grid grid-cols-1 sm:grid-cols-2 py-10 text-primary-foreground px-4 gap-4">
+      <SellScreen />
+      <BuyScreen />
     </div>
   );
 };

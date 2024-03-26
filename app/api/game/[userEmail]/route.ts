@@ -15,6 +15,18 @@ export async function GET(
       where: {
         email: email,
       },
+      include: {
+        ship: {
+          include: {
+            shipEngine: true,
+            shipCargoBay: {
+              include: {
+                resources: true,
+              },
+            },
+          },
+        },
+      },
     });
 
     if (!currentUser) {
