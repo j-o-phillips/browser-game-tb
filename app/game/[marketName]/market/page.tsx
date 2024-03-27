@@ -1,6 +1,5 @@
 "use client";
 
-import { getMarketData } from "@/actions/getMarketData";
 import BuyScreen from "@/components/market/marketPlace/buy";
 import SellScreen from "@/components/market/marketPlace/sell";
 
@@ -25,10 +24,15 @@ const MarketPlace = () => {
   }, [userData]);
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 py-10 text-primary-foreground px-4 gap-4">
-      <SellScreen />
-      <BuyScreen />
-    </div>
+    <>
+      <div className="grid grid-cols-1 sm:grid-cols-2 py-10 text-primary-foreground px-4 gap-4">
+        <SellScreen />
+        <BuyScreen />
+      </div>
+      <Button onClick={() => router.push(`/game/${userData?.currentLoc}`)}>
+        To Spaceport
+      </Button>
+    </>
   );
 };
 

@@ -1,8 +1,11 @@
 "use client";
 
-import { getMarketData } from "@/actions/getMarketData";
+import { getUserById } from "@/actions/getUserById";
+import { getMarketDataByName } from "@/actions/market";
+import { buyResourceSelection } from "@/actions/resource";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
+import { useUserContext } from "@/context/UserContext";
 import Card from "@/customUi/Card";
 import { MarketData } from "@/types";
 import { Resource } from "@prisma/client";
@@ -10,17 +13,18 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const BuyScreen = () => {
+  const { userData, setUserData } = useUserContext();
   const { marketName } = useParams() as { marketName: string };
   const [marketData, setMarketData] = useState<MarketData | null>();
   const [resourceQuantities, setResourceQuantities] = useState<any>({});
   const [totalPrice, setTotalPrice] = useState(0);
 
   useEffect(() => {
-    getMarketData(marketName).then((data) => {
+    getMarketDataByName(marketName).then((data) => {
       setMarketData(data);
       console.log(data);
     });
-  }, []);
+  }, [userData]);
 
   useEffect(() => {
     const sum = Object.values(resourceQuantities)
@@ -30,21 +34,44 @@ const BuyScreen = () => {
   }, [resourceQuantities]);
 
   const handleInputChange = (
+    resourceId: string,
     resourceName: string,
+    currentQuantity: number,
     value: number,
     individualPrice: number
   ) => {
+    //check if user tries to buy more than current market quantity
+    if (value > currentQuantity) return console.log("Not enough inventory");
     setResourceQuantities((prev: any) => ({
       ...prev,
-      [resourceName]: {
+      [resourceId]: {
         quantity: value || 0,
         individualPrice: individualPrice,
+        resourceName: resourceName,
+        currentQuantityInMarketplace: currentQuantity,
       },
     }));
   };
 
   const handleBuy = () => {
     console.log(resourceQuantities);
+    if (!marketData) return "Market data not found";
+    if (!userData) return "User data not found";
+    buyResourceSelection(
+      resourceQuantities,
+      marketData.id,
+      userData.ship.shipCargoBay.id
+    )
+      .then((result) => {
+        console.log(result);
+        setMarketData(result);
+        setResourceQuantities({});
+      })
+      .then(() => {
+        getUserById(userData.id).then((data) => {
+          setUserData(data);
+        });
+      });
   };
 
   return (
@@ -80,10 +107,12 @@ const BuyScreen = () => {
                   type="number"
                   max={resource.amount}
                   name="amount"
-                  value={resourceQuantities[resource.name]?.quantity || 0}
+                  value={resourceQuantities[resource.id]?.quantity || 0}
                   onChange={(e) =>
                     handleInputChange(
+                      resource.id,
                       resource.name,
+                      resource.amount,
                       parseInt(e.target.value),
                       resource.baseValue
                     )
@@ -91,7 +120,8 @@ const BuyScreen = () => {
                 />
               </td>
               <td>
-                {resource.baseValue * resourceQuantities[resource.name] || 0}
+                {resource.baseValue *
+                  resourceQuantities[resource.id]?.quantity || 0}
               </td>
             </tr>
           ))}

@@ -10,6 +10,11 @@ export const getUserById = async (id: string) => {
         ship: {
           include: {
             shipEngine: true,
+            shipCargoBay: {
+              include: {
+                resources: true,
+              },
+            },
           },
         },
       },

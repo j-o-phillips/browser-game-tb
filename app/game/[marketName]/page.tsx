@@ -1,6 +1,6 @@
 "use client";
 
-import { getMarketData } from "@/actions/getMarketData";
+import { getMarketDataByName } from "@/actions/market";
 import MarketNav from "@/components/market/MarketNav";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -10,7 +10,7 @@ const MarketPage = () => {
   const { marketName } = useParams() as { marketName: string };
 
   useEffect(() => {
-    getMarketData(marketName).then((data) => {
+    getMarketDataByName(marketName).then((data) => {
       console.log(data);
     });
   }, []);

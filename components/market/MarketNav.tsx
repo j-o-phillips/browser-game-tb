@@ -13,6 +13,7 @@ const MarketNav = () => {
       <Button onClick={() => router.push(`${marketName}/market`)}>
         Marketplace
       </Button>
+      <Button onClick={() => router.push("bridge")}>Board Ship</Button>
     </Card>
   );
 };
