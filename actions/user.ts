@@ -68,6 +68,23 @@ export const getUserByIdOrEmail = async ({
   }
 };
 
+export const updateUserLanded = async (userId: string, isLanded: boolean) => {
+  try {
+    await db.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        isLanded,
+      },
+    });
+
+    const user = await getUserById(userId);
+    return user;
+  } catch (error: any) {
+    return { error: error.message };
+  }
+};
 export const updateUserCredits = async (userId: string, newCredits: number) => {
   try {
     const user = await db.user.update({

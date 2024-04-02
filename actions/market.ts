@@ -8,6 +8,7 @@ import {
   updateResourceAmountById,
 } from "./resource";
 import { Cronresource, Resource } from "@prisma/client";
+import { cronResources, resources } from "@/data/resources";
 
 //! CRUD
 export const getAllMarkets = async () => {
@@ -77,31 +78,19 @@ export const createNewMarket = async (incomingData: CreateMarketData) => {
       },
     });
 
-    const resourcesData = [
-      {
-        name: "Iron",
-        amount: 1000,
-        baseValue: 20,
-      },
-      {
-        name: "Oxygen",
-        amount: 1000,
-        baseValue: 50,
-      },
-      {
-        name: "Food",
-        amount: 1000,
-        baseValue: 10,
-      },
-      {
-        name: "Fuel",
-        amount: 1000,
-        baseValue: 20,
-      },
-    ];
+    await Promise.all(
+      cronResources.map(async (resourceData) => {
+        return await db.cronresource.create({
+          data: {
+            ...resourceData,
+            marketId: market.id, // Link the resource to the newly created market
+          },
+        });
+      })
+    );
 
-    const createdResources = await Promise.all(
-      resourcesData.map(async (resourceData) => {
+    await Promise.all(
+      resources.map(async (resourceData) => {
         return await db.resource.create({
           data: {
             ...resourceData,
@@ -110,6 +99,7 @@ export const createNewMarket = async (incomingData: CreateMarketData) => {
         });
       })
     );
+
     return { success: "Market created!" };
   } catch (error: any) {
     return { error: error.message };

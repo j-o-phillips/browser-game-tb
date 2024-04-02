@@ -10,6 +10,7 @@ import updateUserLoc from "@/actions/updateUserLoc";
 import TravellingModal from "./travellingModal";
 import { validateFuelAndJumpDist } from "@/functions/misc";
 import Card from "@/customUi/Card";
+import { updateUserLanded } from "@/actions/user";
 
 const BridgeCommands = () => {
   const router = useRouter();
@@ -71,6 +72,27 @@ const BridgeCommands = () => {
     }
   };
 
+  const handleLand = () => {
+    //update user data in db
+    try {
+      updateUserLanded(userData?.id!, true).then((newUser) => {
+        if (newUser) setUserData(newUser);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleTakeOff = () => {
+    try {
+      updateUserLanded(userData?.id!, false).then((newUser) => {
+        if (newUser) setUserData(newUser);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <Card>
@@ -80,10 +102,22 @@ const BridgeCommands = () => {
           Log global context
         </Button>
         <hr className="w-2/3" />
-        <Button onClick={handleTravel}>Launch</Button>
-        <Button onClick={() => router.push(`/game/${userData?.currentLoc}`)}>
-          Dock at Spaceport
-        </Button>
+
+        {userData?.isLanded ? (
+          <>
+            <Button onClick={handleTakeOff}>Take Off</Button>
+            <Button
+              onClick={() => router.push(`/game/${userData?.currentLoc}`)}
+            >
+              To Spaceport
+            </Button>
+          </>
+        ) : (
+          <>
+            <Button onClick={handleTravel}>Travel to Course</Button>
+            <Button onClick={handleLand}>Land</Button>
+          </>
+        )}
 
         <Button
           onClick={() => {

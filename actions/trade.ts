@@ -6,9 +6,11 @@ import { MarketData } from "@/types";
 import {
   createResourceInMarketOrShipCargoBay,
   getResourceById,
+  getResourcesByShipCargoBayOrMarketId,
   updateResourceAmountById,
 } from "./resource";
 import { getUserById, updateUserCredits } from "./user";
+import { getShipById, updateShipFuelByid } from "./ship";
 export const buyResourceSelection = async (
   data: object,
   marketId: string,
@@ -134,4 +136,34 @@ export const sellResourceSelection = async (
   //get updated market data and return it
   const newMarketData = await getMarketDataById(marketId);
   return newMarketData;
+};
+
+export const transferFuelFromCargoToShip = async (
+  fuelData: { fuelAmount: number; resourceId: string },
+  shipId: string,
+
+  userId: string
+) => {
+  try {
+    //Validations
+    if (!fuelData || !shipId || !userId) return "Invalid data";
+    const currentInCargo = await getResourceById(fuelData.resourceId);
+    const newAmount = currentInCargo.amount - fuelData.fuelAmount;
+
+    //Reduce in ship cargo
+    if (newAmount < 0) return "Not enough fuel in cargo";
+    await updateResourceAmountById(fuelData.resourceId, newAmount);
+
+    //Increase in ship
+    const currentShip = await getShipById(shipId);
+    //!Not sure why this error is here
+    // @ts-ignore
+    const newShipFuel = currentShip?.fuel + fuelData.fuelAmount;
+    await updateShipFuelByid(shipId, newShipFuel);
+
+    const user = await getUserById(userId);
+    return user;
+  } catch (error: any) {
+    return { error: error.message };
+  }
 };

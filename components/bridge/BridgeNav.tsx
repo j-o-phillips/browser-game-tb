@@ -14,7 +14,8 @@ const BridgeNav = () => {
     <>
       <Card>
         <h3 className="text-purple-500">
-          Current Location: {userData?.currentLoc}
+          Current Location: {userData?.currentLoc}{" "}
+          {!userData?.isLanded && "Orbit"}
         </h3>
         <h3>Course Destination: {globalData?.targetName} </h3>
         <h3>

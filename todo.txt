@@ -1,13 +1,21 @@
 TODO:
-- prepare schema for cron jobs and oribt/land
+- change markets to use cron resources, trade system needs to be changed too
 - Update market price based on demand
-- Add method to transfer fuel from cargo to tanks
 - Add loading screens
-- Seperate orbiting from landed at spaceport
+
 - place map marker above planet
 
 
 IDEAS:
 - Auction house
+- Mining
+- Build factories
 - turn based combat
 - ship boarding like in x com 
+
+NEXT STAGE:
+- TRADE
+- NAVIGATE
+- UPGRADE 
+- MINE 
+- BUILD AND PRODUCE
