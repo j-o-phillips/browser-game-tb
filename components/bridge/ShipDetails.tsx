@@ -28,11 +28,11 @@ const ShipDetails = () => {
         <Button onClick={() => router.push("/game/bridge/cargo")}>
           Cargo Bay
         </Button>
-        <Button onClick={() => router.push("/game/bridge/weapons")}>
-          Weapons Bay
+        <Button onClick={() => router.push("/game/bridge/loadout")}>
+          Loadout
         </Button>
-        <Button onClick={() => router.push("/game/bridge/engine")}>
-          Engine Room
+        <Button onClick={() => router.push("/game/bridge/data")}>
+          Data Center
         </Button>
       </div>
     </Card>

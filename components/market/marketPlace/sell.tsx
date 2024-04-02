@@ -1,8 +1,8 @@
 "use client";
 
-import { getUserById } from "@/actions/getUserById";
+import { getUserById } from "@/actions/user";
 import { getMarketDataByName } from "@/actions/market";
-import { sellResourceSelection } from "@/actions/resource";
+import { sellResourceSelection } from "@/actions/trade";
 import { Button } from "@/components/ui/button";
 import { useGlobalContext } from "@/context/GlobalContext";
 import { useUserContext } from "@/context/UserContext";
@@ -60,7 +60,8 @@ const SellScreen = () => {
     sellResourceSelection(
       resourceQuantities,
       marketData.id,
-      userData.ship.shipCargoBay.id
+      userData.id,
+      totalPrice
     )
       .then((result) => {
         console.log(result);

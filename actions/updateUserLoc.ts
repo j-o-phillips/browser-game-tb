@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/lib/db";
-import { getUserById } from "./getUserById";
+import { getUserById } from "./user";
 
 export default async function updateUserLoc(
   userId: string,

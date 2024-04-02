@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { getUserByEmail } from "@/actions/user";
 
 const GameClient = () => {
   const router = useRouter();
@@ -14,11 +15,9 @@ const GameClient = () => {
   useEffect(() => {
     if (session.status === "authenticated") {
       try {
-        fetch(`api/game/${session.data?.user?.email}`)
-          .then((response) => response.json())
-          .then((response) => {
-            setUserData(response);
-          });
+        getUserByEmail(session.data?.user?.email!).then((response) => {
+          setUserData(response);
+        });
       } catch (error) {
         console.log(error);
       }

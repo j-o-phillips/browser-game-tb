@@ -1,0 +1,10 @@
+TODO:
+- Update market price based on demand
+- Add method to transfer fuel from cargo to tanks
+- Add loading screens
+- Seperate orbiting from landed at spaceport
+- place map marker above planet
+
+
+IDEAS:
+- Auction house
