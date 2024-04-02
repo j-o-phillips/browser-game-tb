@@ -7,12 +7,13 @@ import {
   getResourcesByShipCargoBayOrMarketId,
   updateResourceAmountById,
 } from "./resource";
+import { Cronresource, Resource } from "@prisma/client";
 
 //! CRUD
 export const getAllMarkets = async () => {
   try {
     const markets = await db.market.findMany({
-      include: { resources: true },
+      include: { resources: true, cronResources: true },
     });
     return markets;
   } catch (error: any) {
@@ -138,7 +139,7 @@ export const updateMarketResourceByAmount = async (
       marketId: marketId,
     });
     const resourceExists = existingResources.find(
-      (r: CreateResourceData) => r.name === resource.name
+      (r: Resource) => r.name === resource.name
     );
 
     //If resource exists on market, update amount
@@ -151,6 +152,45 @@ export const updateMarketResourceByAmount = async (
       await createResourceInMarketOrShipCargoBay(resource);
     }
     return { success: "Resource updated!" };
+  } catch (error: any) {
+    return { error: error.message };
+  }
+};
+
+export const updateMarketCronResourceByAmount = async (
+  marketId: string,
+  resource: CreateResourceData
+) => {
+  try {
+    //check if cron resource exists on market
+    const existingResources = await db.cronresource.findMany({
+      where: { marketId: marketId },
+    });
+
+    const resourceExists = existingResources.find(
+      (r: Cronresource) => r.name === resource.name
+    );
+
+    //If resource exists on market, update amount
+    if (resourceExists) {
+      await db.cronresource.update({
+        where: { id: resourceExists.id },
+        data: {
+          amount: resource.amount,
+        },
+      });
+    }
+
+    //If resource does not exist on market, create new resource
+    else {
+      await db.cronresource.create({
+        data: {
+          ...resource,
+          marketId: marketId,
+        },
+      });
+    }
+    return { success: "Cron Resource updated!" };
   } catch (error: any) {
     return { error: error.message };
   }

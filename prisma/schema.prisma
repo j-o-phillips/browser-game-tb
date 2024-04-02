@@ -20,6 +20,7 @@ model User {
   credits        Int       @default(2000)
   currentLoc     String    @default("Arubula")
   currentPos     Int[]     @default([5, 10])
+  isLanded       Boolean   @default(false)
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
 
@@ -92,7 +93,8 @@ model Market {
   updatedAt DateTime @updatedAt
   systemId  String?  @db.ObjectId
 
-  resources Resource[]
+  resources     Resource[]
+  cronResources Cronresource[]
 
   System System? @relation(fields: [systemId], references: [id], onDelete: Cascade)
 }
@@ -109,4 +111,16 @@ model Resource {
 
   Market       Market?       @relation(fields: [marketId], references: [id], onDelete: Cascade)
   ShipCargoBay ShipCargoBay? @relation(fields: [shipCargoBayId], references: [id], onDelete: Cascade)
+}
+
+model Cronresource {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  baseValue Int
+  amount    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  marketId  String?  @db.ObjectId
+
+  Market Market? @relation(fields: [marketId], references: [id], onDelete: Cascade)
 }

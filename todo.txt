@@ -1,4 +1,5 @@
 TODO:
+- prepare schema for cron jobs and oribt/land
 - Update market price based on demand
 - Add method to transfer fuel from cargo to tanks
 - Add loading screens
@@ -8,3 +9,5 @@ TODO:
 
 IDEAS:
 - Auction house
+- turn based combat
+- ship boarding like in x com 

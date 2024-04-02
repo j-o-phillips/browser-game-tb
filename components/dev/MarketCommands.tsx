@@ -6,6 +6,7 @@ import {
   deleteMarketById,
   getAllMarkets,
   getMarketsBySystemId,
+  updateMarketCronResourceByAmount,
   updateMarketResourceByAmount,
 } from "@/actions/market";
 import { CreateResourceData } from "@/actions/resource";
@@ -64,6 +65,15 @@ const MarketCommands = () => {
     console.log(resourceData);
     if (!resourceData) return "Resource data not found";
     updateMarketResourceByAmount(marketId, resourceData).then((data) => {
+      console.log(data);
+    });
+  };
+
+  const onUpdateMarketCronResources = (e: any) => {
+    e.preventDefault();
+    console.log(resourceData);
+    if (!resourceData) return "Resource data not found";
+    updateMarketCronResourceByAmount(marketId, resourceData).then((data) => {
       console.log(data);
     });
   };
@@ -220,6 +230,62 @@ const MarketCommands = () => {
 
             <Button type="submit" size="sm">
               Update Market Resources by Amount
+            </Button>
+          </form>
+        </div>
+        <div className="border border-black rounded-xl  flex flex-col items-center justify-center  text-center p-4">
+          <form
+            onSubmit={onUpdateMarketCronResources}
+            className="flex flex-col gap-4 text-center"
+          >
+            <input
+              type="text"
+              name="marketId"
+              placeholder="Market Id"
+              onChange={(e) => {
+                setMarketId(e.target.value);
+                setResourceData((prev) => ({
+                  ...prev,
+                  marketId: e.target.value,
+                }));
+              }}
+            />
+            <input
+              type="text"
+              name="resourceName"
+              placeholder="Resource Name"
+              onChange={(e) => {
+                setResourceData((prev) => ({
+                  ...prev,
+                  name: e.target.value,
+                }));
+              }}
+            />
+            <input
+              type="number"
+              name="resourceAmount"
+              placeholder="Resource Amount"
+              onChange={(e) => {
+                setResourceData((prev) => ({
+                  ...prev,
+                  amount: Number(e.target.value),
+                }));
+              }}
+            />
+            <input
+              type="text"
+              name="baseValue"
+              placeholder="Base Value"
+              onChange={(e) => {
+                setResourceData((prev) => ({
+                  ...prev,
+                  baseValue: Number(e.target.value),
+                }));
+              }}
+            />
+
+            <Button type="submit" size="sm">
+              Update Market Cron Resources by Amount
             </Button>
           </form>
         </div>
