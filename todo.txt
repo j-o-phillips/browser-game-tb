@@ -1,4 +1,5 @@
 TODO:
+- wix and GSuite subscriptions
 - change markets to use cron resources, trade system needs to be changed too
 - Update market price based on demand
 - Add loading screens
