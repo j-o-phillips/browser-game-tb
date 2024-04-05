@@ -11,6 +11,7 @@ import TravellingModal from "./travellingModal";
 import { validateFuelAndJumpDist } from "@/functions/misc";
 import Card from "@/customUi/Card";
 import { updateUserLanded } from "@/actions/user";
+import { updateShipFuelByid } from "@/actions/ship";
 
 const BridgeCommands = () => {
   const router = useRouter();
@@ -44,6 +45,10 @@ const BridgeCommands = () => {
     if (userData) {
       try {
         setGlobalData({ ...globalData, isTravelling: true });
+        updateShipFuelByid(
+          userData.ship.id,
+          userData.ship.fuel - globalData.fuelRequiredToDest!
+        );
         updateUserLoc(
           userData.id,
           globalData.targetName,

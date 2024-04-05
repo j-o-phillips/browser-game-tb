@@ -11,6 +11,10 @@ import {
 } from "./resource";
 import { getUserById, updateUserCredits } from "./user";
 import { getShipById, updateShipFuelByid } from "./ship";
+import {
+  getCronResourceById,
+  updateCronResourceAmountById,
+} from "./cronResource";
 export const buyResourceSelection = async (
   data: object,
   marketId: string,
@@ -18,10 +22,46 @@ export const buyResourceSelection = async (
   userId: string,
   totalPrice: number
 ) => {
+  //Find user
+  const user = await getUserById(userId);
+
+  //Find cargo bay
+  const shipCargoBay = await db.shipCargoBay.findUnique({
+    where: {
+      id: shipCargoBayId,
+    },
+    include: {
+      resources: true,
+    },
+  });
+
+  if (!shipCargoBay) return "Ship cargo bay not found";
+
+  //? Perform Price validation
+  const newCredits = user.credits - totalPrice;
+
+  //Update user credits if user has enough credits
+  if (newCredits >= 0) {
+    await updateUserCredits(userId, newCredits);
+  } else {
+    return "Not enough credits";
+  }
+
+  //! Update market price?
+
   //Cycle through the resources to be updated
   for (const [key, value] of Object.entries(data)) {
     //Find current resource
-    const currentResourceInMarket = await getResourceById(key);
+    let currentResourceInMarket;
+    if (
+      value.resourceName === "Food" ||
+      value.resourceName === "Oxygen" ||
+      value.resourceName === "Fuel"
+    ) {
+      currentResourceInMarket = await getCronResourceById(key);
+    } else {
+      currentResourceInMarket = await getResourceById(key);
+    }
 
     //! TODO: Perform validation and price/amount match
 
@@ -32,31 +72,7 @@ export const buyResourceSelection = async (
     if (currentResourceInMarket.amount !== value.currentQuantityInMarketplace)
       return "Marketplace inventory mismatch";
 
-    //? Perform Price validation
-    const user = await getUserById(userId);
-    const newCredits = user.credits - totalPrice;
-
-    //Update user credits if user has enough credits
-    if (newCredits >= 0) {
-      await updateUserCredits(userId, newCredits);
-    } else {
-      return "Not enough credits";
-    }
-
-    //! Update market price?
-
     //? Add resources to ship cargo
-    //Find cargo bay
-    const shipCargoBay = await db.shipCargoBay.findUnique({
-      where: {
-        id: shipCargoBayId,
-      },
-      include: {
-        resources: true,
-      },
-    });
-
-    if (!shipCargoBay) return "Ship cargo bay not found";
     // Check if resource is already in cargo
     const existingResourceInCargo = shipCargoBay.resources.find(
       (resource) => resource.name === value.resourceName
@@ -79,7 +95,15 @@ export const buyResourceSelection = async (
 
     //Reduce in market
     const newAmount = currentResourceInMarket.amount - value.quantity;
-    await updateResourceAmountById(key, newAmount);
+    if (
+      value.resourceName === "Food" ||
+      value.resourceName === "Oxygen" ||
+      value.resourceName === "Fuel"
+    ) {
+      await updateCronResourceAmountById(key, newAmount);
+    } else {
+      await updateResourceAmountById(key, newAmount);
+    }
   }
 
   //get updated market data and return it
@@ -93,6 +117,19 @@ export const sellResourceSelection = async (
   userId: string,
   totalPrice: number
 ) => {
+  //? Perform Price validation on market
+  //!Maybe update market credits
+  //Update user credits
+  const user = await getUserById(userId);
+  const newUserCredits = user.credits + totalPrice;
+  await updateUserCredits(userId, newUserCredits);
+
+  //Find market resources
+  const market: MarketData = await getMarketDataById(marketId);
+
+  if (!market) return "Market name not found";
+  // Resource should always exist in market
+
   //Cycle through the resources to be updated
   for (const [key, value] of Object.entries(data)) {
     //Find current resource
@@ -103,30 +140,47 @@ export const sellResourceSelection = async (
     if (currentResourceInShipCargo.amount < value.quantity)
       return "Not enough inventory";
 
-    //? Perform Price validation on market
-    //!Maybe update market credits
-    //Update user credits
-    const user = await getUserById(userId);
-    const newUserCredits = user.credits + totalPrice;
-    await updateUserCredits(userId, newUserCredits);
-
     //? Add resources to market Inventory
-    //Find market resources
-    const market: MarketData = await getMarketDataById(marketId);
 
-    if (!market) return "Market name not found";
-    // Resource should always exist in market
-    const existingResourceInMarket = market.resources.find(
-      (resource) => resource.name === value.resourceName
-    );
+    let existingResourceInMarket;
+    //!If Cron Resource
+    if (
+      value.resourceName === "Food" ||
+      value.resourceName === "Oxygen" ||
+      value.resourceName === "Fuel"
+    ) {
+      existingResourceInMarket = market.cronResources.find(
+        (resource) => resource.name === value.resourceName
+      );
+    } //! If normal resource
+    else {
+      existingResourceInMarket = market.resources.find(
+        (resource) => resource.name === value.resourceName
+      );
+    }
+
     //Update resource in cargo if it exists
     if (!existingResourceInMarket) return "Resource not found in market";
 
     const newMarketAmount = existingResourceInMarket.amount + value.quantity;
-    await updateResourceAmountById(
-      existingResourceInMarket.id,
-      newMarketAmount
-    );
+
+    //!If Cron Resource
+    if (
+      value.resourceName === "Food" ||
+      value.resourceName === "Oxygen" ||
+      value.resourceName === "Fuel"
+    ) {
+      await updateCronResourceAmountById(
+        existingResourceInMarket.id,
+        newMarketAmount
+      );
+    } //! If normal resource
+    else {
+      await updateResourceAmountById(
+        existingResourceInMarket.id,
+        newMarketAmount
+      );
+    }
 
     //Reduce in ship cargo
     const newCargoAmount = currentResourceInShipCargo.amount - value.quantity;

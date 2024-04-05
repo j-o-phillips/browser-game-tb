@@ -8,7 +8,7 @@ import { Slider } from "@/components/ui/slider";
 import { useUserContext } from "@/context/UserContext";
 import Card from "@/customUi/Card";
 import { MarketData } from "@/types";
-import { Resource } from "@prisma/client";
+import { Cronresource, Resource } from "@prisma/client";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -90,6 +90,43 @@ const BuyScreen = () => {
           </tr>
         </thead>
         <tbody>
+          {marketData?.cronResources?.map((resource: Cronresource) => (
+            <tr key={resource.id}>
+              <td>{resource.name}</td>
+              <td>{resource.baseValue}</td>
+              <td>{resource.amount}</td>
+              {/* <td className="w-full">
+                <Slider
+                  defaultValue={[0]}
+                  max={resource.amount}
+                  step={1}
+                  onValueChange={(value) => console.log(value)}
+                />
+              </td> */}
+              <td>
+                <input
+                  min={0}
+                  type="number"
+                  max={resource.amount}
+                  name="amount"
+                  value={resourceQuantities[resource.id]?.quantity || 0}
+                  onChange={(e) =>
+                    handleInputChange(
+                      resource.id,
+                      resource.name,
+                      resource.amount,
+                      parseInt(e.target.value),
+                      resource.baseValue
+                    )
+                  }
+                />
+              </td>
+              <td>
+                {resource.baseValue *
+                  resourceQuantities[resource.id]?.quantity || 0}
+              </td>
+            </tr>
+          ))}
           {marketData?.resources?.map((resource: Resource) => (
             <tr key={resource.id}>
               <td>{resource.name}</td>

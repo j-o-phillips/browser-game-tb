@@ -26,7 +26,7 @@ export const getMarketDataByName = async (name: string) => {
   try {
     const market = await db.market.findFirst({
       where: { name },
-      include: { resources: true },
+      include: { resources: true, cronResources: true },
     });
     return market;
   } catch (error: any) {
@@ -38,7 +38,7 @@ export const getMarketDataById = async (id: string) => {
   try {
     const market = await db.market.findUnique({
       where: { id },
-      include: { resources: true },
+      include: { resources: true, cronResources: true },
     });
     return market;
   } catch (error: any) {
