@@ -5,15 +5,17 @@ import { transferFuelFromCargoToShip } from "@/actions/trade";
 import { getUserById } from "@/actions/user";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
+import { useGlobalContext } from "@/context/GlobalContext";
 import { useUserContext } from "@/context/UserContext";
 import Card from "@/customUi/Card";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { number } from "zod";
 
 const CargoDisplay = () => {
   const router = useRouter();
   const { userData, setUserData } = useUserContext();
+  const { globalData, setGlobalData } = useGlobalContext();
   const [fuelAmount, setFuelAmount] = useState<{
     fuelAmount: number;
     resourceId: string;
@@ -21,6 +23,12 @@ const CargoDisplay = () => {
     fuelAmount: 0,
     resourceId: "",
   });
+
+  // useEffect(() => {
+  //   getUserById(userData?.id!).then((data) => {
+  //     if (data) setUserData(data);
+  //   });
+  // }, [userData]);
 
   const onTransferFuel = (e: any) => {
     e.preventDefault();
@@ -31,6 +39,13 @@ const CargoDisplay = () => {
     ).then((data) => {
       console.log(data);
       if (data?.ship) setUserData(data);
+    });
+  };
+
+  const toggleCargoModal = () => {
+    setGlobalData({
+      ...globalData,
+      cargoModalOpen: !globalData.cargoModalOpen,
     });
   };
   return (
@@ -64,7 +79,7 @@ const CargoDisplay = () => {
         );
       })}
 
-      <Button onClick={() => router.push("/game/bridge")}>To Bridge</Button>
+      <Button onClick={toggleCargoModal}>To Bridge</Button>
     </Card>
   );
 };

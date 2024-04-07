@@ -2,8 +2,15 @@ TODO:
 - GSuite subscriptions
 - explore ai music companies as well as music tech
 
+- delete cargo and map pages
+- increase calculation complexity
 - Update market price based on demand
 - Add loading screens
+- shipyard upgrades
+- sell ship upgrades?
+- add cargo bay limitations
+- Deal with hull upgrades
+- factories
 
 - place map marker above planet
 
@@ -16,8 +23,8 @@ IDEAS:
 - ship boarding like in x com 
 
 NEXT STAGE:
-- TRADE
-- NAVIGATE
+- TRADE dynamic price
+- NAVIGATE scan
 - UPGRADE 
 - MINE 
 - BUILD AND PRODUCE

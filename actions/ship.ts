@@ -16,7 +16,6 @@ export const getShipById = async (id: string) => {
     return { error: error.message };
   }
 };
-//test
 
 export const updateShipFuelByid = async (id: string, amount: number) => {
   try {

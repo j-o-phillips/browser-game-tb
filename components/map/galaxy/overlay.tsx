@@ -43,6 +43,11 @@ const MapOverlay = ({ objectData }: MapOverlayProps) => {
     };
     setGlobalData(data);
   };
+
+  const toggleMapModal = () => {
+    setGlobalData({ ...globalData, mapModalOpen: !globalData.mapModalOpen });
+  };
+
   return (
     <>
       <div
@@ -85,9 +90,7 @@ const MapOverlay = ({ objectData }: MapOverlayProps) => {
             <Button onClick={onSetCourse}>Set Course</Button>
           </>
         )}
-        <Button onClick={() => router.push("/game/bridge")}>
-          Back to Bridge
-        </Button>
+        <Button onClick={toggleMapModal}>Back to Bridge</Button>
       </div>
     </>
   );

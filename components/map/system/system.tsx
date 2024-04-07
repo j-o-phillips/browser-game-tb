@@ -5,17 +5,7 @@ import { useLoader } from "@react-three/fiber";
 import PlayerMarker from "./playerMarker";
 import { Dispatch, SetStateAction, useRef } from "react";
 import { MapObjectData } from "@/types";
-import { Button } from "@/app/apfel/button";
-import { Container } from "@react-three/uikit";
-import { Camera, Object3D } from "three";
-
-// import Planet1 from "./planets/Planet1";
-// import Planet2 from "./planets/Planet2";
-// import Planet3 from "./planets/Planet3";
-// import Planet4 from "./planets/Planet4";
-// import Planet5 from "./planets/Planet5";
-// import Planet6 from "./planets/Planet6";
-// import Planet7 from "./planets/Planet7";
+import { arubula, polox, sun, zendon } from "@/data/markets";
 
 type SystemMapProps = {
   objectData: MapObjectData | undefined;
@@ -26,6 +16,7 @@ const SystemMap = ({ setObjectData, objectData }: SystemMapProps) => {
   const sunMap = useLoader(TextureLoader, "/planetText/sun.jpg");
   const planet1Map = useLoader(TextureLoader, "/planetText/planet1.jpg");
   const planet2Map = useLoader(TextureLoader, "/planetText/planet2.jpg");
+  const planet3Map = useLoader(TextureLoader, "/planetText/planet3.jpg");
   const body = useRef();
   return (
     <>
@@ -49,14 +40,15 @@ const SystemMap = ({ setObjectData, objectData }: SystemMapProps) => {
         emissiveIntensity={0.2}
         rotationSpeed={0}
         setObjectData={setObjectData}
-        positionX={0}
-        positionZ={0}
+        positionX={sun.positionX}
+        positionZ={sun.positionZ}
+        unclickable
       />
       <CelestialBody
         name="Arubula"
         texture={planet1Map}
-        positionX={5}
-        positionZ={10}
+        positionX={arubula.positionX}
+        positionZ={arubula.positionZ}
         scale={1.3}
         rotationSpeed={0.3}
         setObjectData={setObjectData}
@@ -64,15 +56,24 @@ const SystemMap = ({ setObjectData, objectData }: SystemMapProps) => {
       <CelestialBody
         name="Zendon"
         texture={planet2Map}
-        positionX={-10}
-        positionZ={-5}
+        positionX={zendon.positionX}
+        positionZ={zendon.positionZ}
         scale={0.8}
         rotationSpeed={0.5}
         setObjectData={setObjectData}
       />
+      <CelestialBody
+        name="Polox"
+        texture={planet3Map}
+        positionX={polox.positionX}
+        positionZ={polox.positionZ}
+        scale={1.5}
+        rotationSpeed={0.3}
+        setObjectData={setObjectData}
+      />
 
       <gridHelper args={[50, 10, "gray", "gray"]} />
-      <axesHelper args={[5]} />
+      {/* <axesHelper args={[5]} /> */}
     </>
   );
 };

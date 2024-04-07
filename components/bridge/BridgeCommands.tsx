@@ -5,22 +5,44 @@ import { Button } from "../ui/button";
 import { useGlobalContext } from "@/context/GlobalContext";
 import { useUserContext } from "@/context/UserContext";
 import { signOut } from "next-auth/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import updateUserLoc from "@/actions/updateUserLoc";
 import TravellingModal from "./travellingModal";
 import { validateFuelAndJumpDist } from "@/functions/misc";
 import Card from "@/customUi/Card";
-import { updateUserLanded } from "@/actions/user";
+import { getUserById, updateUserLanded } from "@/actions/user";
 import { updateShipFuelByid } from "@/actions/ship";
+import { getMarketDataByName } from "@/actions/market";
+import { MarketData } from "@/types";
+import {
+  CreateResourceData,
+  createOrUpdateResourceInmarketOrShipCargoBay,
+} from "@/actions/resource";
 
 const BridgeCommands = () => {
   const router = useRouter();
   const { globalData, setGlobalData } = useGlobalContext();
   const { userData, setUserData } = useUserContext();
+  const [marketData, setMarketData] = useState<MarketData | null>();
+  const [resourceData, setResourceData] = useState<CreateResourceData>({
+    name: "Hydrogen",
+    amount: 50,
+    baseValue: 5,
+    shipCargoBayId: userData?.ship.shipCargoBay.id,
+  });
 
   useEffect(() => {
     if (!userData) {
       router.push("/game");
+    }
+  }, [userData]);
+
+  useEffect(() => {
+    if (userData) {
+      getMarketDataByName(userData?.currentLoc).then((data: any) => {
+        console.log(data);
+        setMarketData(data);
+      });
     }
   }, [userData]);
 
@@ -98,6 +120,21 @@ const BridgeCommands = () => {
     }
   };
 
+  const handleMine = () => {
+    try {
+      createOrUpdateResourceInmarketOrShipCargoBay(resourceData).then(
+        (data) => {
+          if (data) console.log(data);
+          getUserById(userData?.id!).then((data) => {
+            if (data) setUserData(data);
+          });
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <Card>
@@ -120,7 +157,13 @@ const BridgeCommands = () => {
         ) : (
           <>
             <Button onClick={handleTravel}>Travel to Course</Button>
-            <Button onClick={handleLand}>Land</Button>
+            {marketData?.landable && <Button onClick={handleLand}>Land</Button>}
+            {marketData?.mineable && (
+              <div className="flex items-center gap-2">
+                <Button onClick={handleMine}>Mine</Button>
+                <p className="text-sm">+ 50 hydrogen</p>
+              </div>
+            )}
           </>
         )}
 

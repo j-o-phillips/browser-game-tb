@@ -1,4 +1,9 @@
-import { Cronresource, Market, Resource } from "@prisma/client";
+import {
+  Cronresource,
+  Market,
+  Resource,
+  ShipEngineSaleTemplate,
+} from "@prisma/client";
 
 export type MapObjectData = {
   name: string;
@@ -13,9 +18,12 @@ export type GlobalContextData = {
   eta: number | null; //deprecated
   isTravelling: boolean; //deprecated
   canLand: boolean; //deprecated
+  mapModalOpen: boolean;
+  cargoModalOpen: boolean;
 };
 
 export type MarketData = Market & {
   resources: Resource[];
   cronResources: Cronresource[];
+  shipEngineSaleTemplates: ShipEngineSaleTemplate[];
 };

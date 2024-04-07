@@ -8,7 +8,7 @@ import SellScreen from "@/components/market/marketPlace/sell";
 const MarketPlace = () => {
   return (
     <>
-      <div className="grid grid-cols-1 sm:grid-cols-2 py-10 text-primary-foreground px-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 sm:h-screen py-10 text-primary-foreground px-4 gap-4">
         <PlayerDetails />
         <MarketDetails />
         <SellScreen />

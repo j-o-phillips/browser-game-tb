@@ -15,6 +15,7 @@ type CelestialBodyProps = {
   positionZ: number;
   scale?: number;
   rotationSpeed: number;
+  unclickable?: boolean;
   setObjectData: Dispatch<SetStateAction<MapObjectData | undefined>>;
 };
 
@@ -27,6 +28,7 @@ const CelestialBody = ({
   positionZ,
   scale,
   rotationSpeed,
+  unclickable,
   setObjectData,
 }: CelestialBodyProps) => {
   const { gl } = useThree();
@@ -52,13 +54,16 @@ const CelestialBody = ({
         position-z={positionZ}
         scale={scale}
         onClick={(e) => {
+          if (unclickable) return;
           e.stopPropagation();
           handleSelect();
         }}
         onPointerEnter={() => {
+          if (unclickable) return;
           gl.domElement.style.cursor = "pointer";
         }}
         onPointerLeave={() => {
+          if (unclickable) return;
           gl.domElement.style.cursor = "default";
         }}
       >

@@ -14,7 +14,11 @@ import { cronResources, resources } from "@/data/resources";
 export const getAllMarkets = async () => {
   try {
     const markets = await db.market.findMany({
-      include: { resources: true, cronResources: true },
+      include: {
+        resources: true,
+        cronResources: true,
+        shipEngineSaleTemplates: true,
+      },
     });
     return markets;
   } catch (error: any) {
@@ -26,7 +30,11 @@ export const getMarketDataByName = async (name: string) => {
   try {
     const market = await db.market.findFirst({
       where: { name },
-      include: { resources: true, cronResources: true },
+      include: {
+        resources: true,
+        cronResources: true,
+        shipEngineSaleTemplates: true,
+      },
     });
     return market;
   } catch (error: any) {
@@ -38,7 +46,11 @@ export const getMarketDataById = async (id: string) => {
   try {
     const market = await db.market.findUnique({
       where: { id },
-      include: { resources: true, cronResources: true },
+      include: {
+        resources: true,
+        cronResources: true,
+        shipEngineSaleTemplates: true,
+      },
     });
     return market;
   } catch (error: any) {
@@ -50,7 +62,11 @@ export const getMarketsBySystemId = async (systemId: string) => {
   try {
     const markets = await db.market.findMany({
       where: { systemId },
-      include: { resources: true },
+      include: {
+        resources: true,
+        cronResources: true,
+        shipEngineSaleTemplates: true,
+      },
     });
     return markets;
   } catch (error: any) {
@@ -60,13 +76,15 @@ export const getMarketsBySystemId = async (systemId: string) => {
 
 export type CreateMarketData = {
   name: string;
-
   systemId: string;
   positionX: string;
   positionY: string;
+  landable: boolean;
+  mineable: boolean;
 };
 export const createNewMarket = async (incomingData: CreateMarketData) => {
-  const { name, systemId, positionX, positionY } = incomingData;
+  const { name, systemId, positionX, positionY, landable, mineable } =
+    incomingData;
   console.log(incomingData);
 
   try {
@@ -75,6 +93,8 @@ export const createNewMarket = async (incomingData: CreateMarketData) => {
         name: name,
         systemId: systemId,
         position: [Number(positionX), Number(positionY)],
+        landable: landable,
+        mineable: mineable,
       },
     });
 

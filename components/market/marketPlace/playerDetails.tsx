@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { useUserContext } from "@/context/UserContext";
 import Card from "@/customUi/Card";

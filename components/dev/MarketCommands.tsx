@@ -17,6 +17,8 @@ const MarketCommands = () => {
     systemId: "",
     positionX: "",
     positionY: "",
+    landable: false,
+    mineable: false,
   });
   const [systemId, setSystemId] = useState<string>("");
   const [marketId, setMarketId] = useState<string>("");
@@ -153,6 +155,38 @@ const MarketCommands = () => {
                 }));
               }}
             />
+            <div>
+              <label htmlFor="landable" className="px-2">
+                Landable
+              </label>
+              <input
+                type="checkbox"
+                name="landable"
+                placeholder="landable"
+                onChange={(e) => {
+                  setMarketData((prev) => ({
+                    ...prev,
+                    landable: e.target.checked,
+                  }));
+                }}
+              />
+            </div>
+            <div>
+              <label htmlFor="mineable" className="px-2">
+                Mineable
+              </label>
+              <input
+                type="checkbox"
+                name="mineable"
+                placeholder="mineable"
+                onChange={(e) => {
+                  setMarketData((prev) => ({
+                    ...prev,
+                    mineable: e.target.checked,
+                  }));
+                }}
+              />
+            </div>
             <Button type="submit" size="sm">
               Add Market with default resources
             </Button>

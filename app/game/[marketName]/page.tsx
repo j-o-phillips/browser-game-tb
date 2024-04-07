@@ -6,14 +6,8 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const MarketPage = () => {
-  const [marketData, setMarketData] = useState({});
   const { marketName } = useParams() as { marketName: string };
 
-  useEffect(() => {
-    getMarketDataByName(marketName).then((data) => {
-      console.log(data);
-    });
-  }, []);
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2  sm:h-screen p-4 gap-4 text-primary-foreground">
       <div className="h-full  w-full flex flex-col items-center py-2 ">

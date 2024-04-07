@@ -1,6 +1,10 @@
 "use server";
 
 import { db } from "@/lib/db";
+import { getShipCargoBayById } from "./shipCargoBay";
+import { Resource, ShipCargoBay } from "@prisma/client";
+
+//! CRUD
 
 export const getResourceById = async (id: string) => {
   try {
@@ -85,5 +89,48 @@ export const deleteResourceById = async (id: string) => {
     return { success: "Resource deleted!" };
   } catch (error: any) {
     return { error: error.message };
+  }
+};
+
+//! COMPOSITE
+
+export const createOrUpdateResourceInmarketOrShipCargoBay = async (
+  resourceData: CreateResourceData,
+  shipCargoBay?: ShipCargoBay & { resources: Resource[] }
+) => {
+  let foundShipCargoBay;
+  if (shipCargoBay) foundShipCargoBay = shipCargoBay;
+  else {
+    if (!resourceData.shipCargoBayId) return "Ship cargo bay Id not provided";
+    shipCargoBay = await getShipCargoBayById(resourceData.shipCargoBayId);
+    if (!shipCargoBay) return "Ship cargo bay not found";
+  }
+
+  try {
+    //? Add resources to ship cargo
+
+    // Check if resource is already in cargo
+    const existingResourceInCargo = shipCargoBay.resources.find(
+      (resource: Resource) => resource.name === resourceData.name
+    );
+
+    // Create new resource if not in cargo
+    if (!existingResourceInCargo) {
+      await createResourceInMarketOrShipCargoBay({
+        name: resourceData.name,
+        amount: resourceData.amount,
+        baseValue: resourceData.baseValue,
+        shipCargoBayId: resourceData.shipCargoBayId,
+        marketId: resourceData.marketId,
+      });
+    }
+    //Update resource in cargo if it exists
+    else {
+      const newAmount = existingResourceInCargo.amount + resourceData.amount;
+      await updateResourceAmountById(existingResourceInCargo.id, newAmount);
+    }
+    return { success: "Resource updated!" };
+  } catch (error: any) {
+    return error.message;
   }
 };

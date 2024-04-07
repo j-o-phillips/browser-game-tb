@@ -4,6 +4,7 @@ import { db } from "@/lib/db";
 import { getMarketDataById } from "./market";
 import { MarketData } from "@/types";
 import {
+  createOrUpdateResourceInmarketOrShipCargoBay,
   createResourceInMarketOrShipCargoBay,
   getResourceById,
   getResourcesByShipCargoBayOrMarketId,
@@ -15,6 +16,9 @@ import {
   getCronResourceById,
   updateCronResourceAmountById,
 } from "./cronResource";
+import { getShipCargoBayById } from "./shipCargoBay";
+import { Resource, ShipCargoBay, ShipEngineSaleTemplate } from "@prisma/client";
+import { updateShipEngineById } from "./shipEngine";
 export const buyResourceSelection = async (
   data: object,
   marketId: string,
@@ -26,15 +30,8 @@ export const buyResourceSelection = async (
   const user = await getUserById(userId);
 
   //Find cargo bay
-  const shipCargoBay = await db.shipCargoBay.findUnique({
-    where: {
-      id: shipCargoBayId,
-    },
-    include: {
-      resources: true,
-    },
-  });
-
+  const shipCargoBay: ShipCargoBay & { resources: Resource[] } =
+    await getShipCargoBayById(shipCargoBayId);
   if (!shipCargoBay) return "Ship cargo bay not found";
 
   //? Perform Price validation
@@ -73,25 +70,16 @@ export const buyResourceSelection = async (
       return "Marketplace inventory mismatch";
 
     //? Add resources to ship cargo
-    // Check if resource is already in cargo
-    const existingResourceInCargo = shipCargoBay.resources.find(
-      (resource) => resource.name === value.resourceName
-    );
-
-    // Create new resource if not in cargo
-    if (!existingResourceInCargo) {
-      await createResourceInMarketOrShipCargoBay({
+    await createOrUpdateResourceInmarketOrShipCargoBay(
+      {
         name: value.resourceName,
         amount: value.quantity,
         baseValue: value.individualPrice,
+        marketId: marketId,
         shipCargoBayId: shipCargoBayId,
-      });
-    }
-    //Update resource in cargo if it exists
-    else {
-      const newAmount = existingResourceInCargo.amount + value.quantity;
-      await updateResourceAmountById(existingResourceInCargo.id, newAmount);
-    }
+      },
+      shipCargoBay
+    );
 
     //Reduce in market
     const newAmount = currentResourceInMarket.amount - value.quantity;
@@ -216,6 +204,33 @@ export const transferFuelFromCargoToShip = async (
     await updateShipFuelByid(shipId, newShipFuel);
 
     const user = await getUserById(userId);
+    return user;
+  } catch (error: any) {
+    return { error: error.message };
+  }
+};
+
+export const buyShipEngine = async (
+  userId: string,
+  userCredits: number,
+  engineId: string,
+  engineData: ShipEngineSaleTemplate
+) => {
+  try {
+    //Validations
+    if (!userId || !engineId || !engineData) return "Invalid data";
+
+    //Check if user has enough credits
+    if (userCredits < engineData.price) return "Not enough credits";
+
+    //Reduce user credits
+    const newCredits = userCredits - engineData.price;
+    await updateUserCredits(userId, newCredits);
+
+    //Update in DB
+    const shipEngine = await updateShipEngineById(engineId, engineData);
+    const user = await getUserById(userId);
+
     return user;
   } catch (error: any) {
     return { error: error.message };
