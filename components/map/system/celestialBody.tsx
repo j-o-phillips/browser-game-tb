@@ -67,7 +67,7 @@ const CelestialBody = ({
           gl.domElement.style.cursor = "default";
         }}
       >
-        <sphereGeometry />
+        <sphereGeometry args={[1, 64, 64]} />
         <meshStandardMaterial
           map={texture}
           emissive={emissive}

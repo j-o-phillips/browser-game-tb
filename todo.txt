@@ -1,6 +1,7 @@
 TODO:
 - GSuite subscriptions
 - explore ai music companies as well as music tech
+- wordpress course/Revamp CV/ Kire tree
 
 - delete cargo and map pages
 - increase calculation complexity

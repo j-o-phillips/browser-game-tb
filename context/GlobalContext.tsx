@@ -17,6 +17,8 @@ const GlobalContext = createContext<GlobalContext>({
     eta: null,
     isTravelling: false,
     canLand: false,
+    mapModalOpen: false,
+    cargoModalOpen: false,
   },
   setGlobalData: () => {},
 });
@@ -32,6 +34,8 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
     eta: null,
     isTravelling: false,
     canLand: false,
+    mapModalOpen: false,
+    cargoModalOpen: false,
   });
   return (
     <GlobalContext.Provider value={{ globalData, setGlobalData }}>

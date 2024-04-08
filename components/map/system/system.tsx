@@ -14,10 +14,10 @@ type SystemMapProps = {
 
 const SystemMap = ({ setObjectData, objectData }: SystemMapProps) => {
   const sunMap = useLoader(TextureLoader, "/planetText/sun.jpg");
-  const planet1Map = useLoader(TextureLoader, "/planetText/planet1.jpg");
-  const planet2Map = useLoader(TextureLoader, "/planetText/planet2.jpg");
-  const planet3Map = useLoader(TextureLoader, "/planetText/planet3.jpg");
-  const body = useRef();
+  const planet1Map = useLoader(TextureLoader, "/planetText/Arubula.jpg");
+  const planet2Map = useLoader(TextureLoader, "/planetText/Zendon.jpg");
+  const planet3Map = useLoader(TextureLoader, "/planetText/Polox.jpg");
+
   return (
     <>
       {/* <Perf position="top-left" /> */}
