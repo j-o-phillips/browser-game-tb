@@ -140,8 +140,8 @@ model Resource {
   name           String
   baseValue      Int
   amount         Int
-  weight         Int
-  volume         Int
+  weight         Int      @default(1)
+  volume         Int      @default(1)
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
   marketId       String?  @db.ObjectId
