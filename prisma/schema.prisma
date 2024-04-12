@@ -89,6 +89,19 @@ model ShipCargoBay {
   Ship Ship @relation(fields: [shipId], references: [id], onDelete: Cascade)
 }
 
+model ShipCargoBaySaleTemplate {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  name          String   @default("Basic Engine")
+  currentDamage Int      @default(0) // 0 = perfect 100 = broken
+  maxCapacity   Int      @default(100)
+  price         Int      @default(5000)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  //many to many
+  marketIds     String[] @db.ObjectId
+  markets       Market[] @relation(fields: [marketIds], references: [id])
+}
+
 model System {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   name      String?
@@ -110,13 +123,16 @@ model Market {
   updatedAt DateTime @updatedAt
   systemId  String?  @db.ObjectId
 
-  resources               Resource[]
-  cronResources           Cronresource[]
-  //Many-Many
-  shipEngineSaleTemplates ShipEngineSaleTemplate[] @relation(fields: [shipEngineSaleTemplateIDs], references: [id])
+  System        System?        @relation(fields: [systemId], references: [id], onDelete: Cascade)
+  resources     Resource[]
+  cronResources Cronresource[]
 
-  System                    System?  @relation(fields: [systemId], references: [id], onDelete: Cascade)
+  //Many-Many
+  shipEngineSaleTemplates   ShipEngineSaleTemplate[]   @relation(fields: [shipEngineSaleTemplateIDs], references: [id])
+  shipCargoBaySaleTemplates ShipCargoBaySaleTemplate[] @relation(fields: [shipCargoBayTemplateIDs], references: [id])
+
   shipEngineSaleTemplateIDs String[] @db.ObjectId
+  shipCargoBayTemplateIDs   String[] @db.ObjectId
 }
 
 model Resource {
@@ -124,6 +140,8 @@ model Resource {
   name           String
   baseValue      Int
   amount         Int
+  weight         Int
+  volume         Int
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
   marketId       String?  @db.ObjectId

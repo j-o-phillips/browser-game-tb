@@ -7,6 +7,7 @@ import ShipCommands from "@/components/dev/ShipCommands";
 import UserCommands from "@/components/dev/UserCommands";
 import CronResourceCommands from "@/components/dev/CronResourceCommands";
 import ShipEngineSaleTemplateCommands from "@/components/dev/ShipEngineSaleTemplateCommands";
+import ShipCargoBaySaleTemplateCommands from "@/components/dev/ShipCargoBaySaleTemplateCommands";
 
 const DevPage = () => {
   return (
@@ -14,6 +15,7 @@ const DevPage = () => {
       <CronResourceCommands />
       <MarketCommands />
       <ResourceCommands />
+      <ShipCargoBaySaleTemplateCommands />
       <ShipEngineSaleTemplateCommands />
       <ShipCommands />
       <SystemCommands />

@@ -4,14 +4,19 @@ import { getMarketDataByName } from "@/actions/market";
 import { Button } from "@/components/ui/button";
 import { useUserContext } from "@/context/UserContext";
 import { MarketData } from "@/types";
-import { ShipEngineSaleTemplate } from "@prisma/client";
+import {
+  ShipCargoBaySaleTemplate,
+  ShipEngineSaleTemplate,
+} from "@prisma/client";
 import { useParams } from "next/navigation";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 type BuyEngineProps = {
   setEquipmentType: Dispatch<SetStateAction<string>>;
   setEquipmentData: Dispatch<
-    SetStateAction<ShipEngineSaleTemplate | undefined>
+    SetStateAction<
+      ShipEngineSaleTemplate | ShipCargoBaySaleTemplate | undefined
+    >
   >;
 };
 

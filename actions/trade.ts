@@ -16,8 +16,13 @@ import {
   getCronResourceById,
   updateCronResourceAmountById,
 } from "./cronResource";
-import { getShipCargoBayById } from "./shipCargoBay";
-import { Resource, ShipCargoBay, ShipEngineSaleTemplate } from "@prisma/client";
+import { getShipCargoBayById, updateShipCargoBayById } from "./shipCargoBay";
+import {
+  Resource,
+  ShipCargoBay,
+  ShipCargoBaySaleTemplate,
+  ShipEngineSaleTemplate,
+} from "@prisma/client";
 import { updateShipEngineById } from "./shipEngine";
 export const buyResourceSelection = async (
   data: object,
@@ -210,25 +215,38 @@ export const transferFuelFromCargoToShip = async (
   }
 };
 
-export const buyShipEngine = async (
+export const buyShipEquipment = async (
   userId: string,
   userCredits: number,
-  engineId: string,
-  engineData: ShipEngineSaleTemplate
+  currentEquipmentId: string,
+  equipmentType: string,
+  eqipmentData: ShipEngineSaleTemplate | ShipCargoBaySaleTemplate
 ) => {
   try {
     //Validations
-    if (!userId || !engineId || !engineData) return "Invalid data";
+    if (!userId || !currentEquipmentId || !eqipmentData) return "Invalid data";
 
     //Check if user has enough credits
-    if (userCredits < engineData.price) return "Not enough credits";
+    if (userCredits < eqipmentData.price) return "Not enough credits";
 
     //Reduce user credits
-    const newCredits = userCredits - engineData.price;
+    const newCredits = userCredits - eqipmentData.price;
     await updateUserCredits(userId, newCredits);
 
-    //Update in DB
-    const shipEngine = await updateShipEngineById(engineId, engineData);
+    //Check equipment type and Update in DB
+    if (equipmentType === "engine") {
+      await updateShipEngineById(
+        currentEquipmentId,
+        eqipmentData as ShipEngineSaleTemplate
+      );
+    }
+
+    if (equipmentType === "cargoBay") {
+      await updateShipCargoBayById(
+        currentEquipmentId,
+        eqipmentData as ShipCargoBaySaleTemplate
+      );
+    }
     const user = await getUserById(userId);
 
     return user;

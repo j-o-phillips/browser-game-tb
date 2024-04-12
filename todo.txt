@@ -3,16 +3,16 @@ TODO:
 - explore ai music companies as well as music tech
 - wordpress course/Revamp CV/ Kire tree
 
+- add cargo bay limitations
+- Factories
+
 - delete cargo and map pages
 - increase calculation complexity
 - Update market price based on demand
 - Add loading screens
 - shipyard upgrades
-- sell ship upgrades?
-- add cargo bay limitations
+- sell/downgrade ship upgrades?
 - Deal with hull upgrades
-- factories
-
 - place map marker above planet
 
 

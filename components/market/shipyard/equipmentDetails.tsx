@@ -1,15 +1,18 @@
 "use client";
 
-import { updateShipEngineById } from "@/actions/shipEngine";
-import { buyShipEngine } from "@/actions/trade";
+import { buyShipEquipment } from "@/actions/trade";
 import { Button } from "@/components/ui/button";
 import { useUserContext } from "@/context/UserContext";
 import Card from "@/customUi/Card";
-import { ShipEngine, ShipEngineSaleTemplate } from "@prisma/client";
+import {
+  ShipCargoBaySaleTemplate,
+  ShipEngine,
+  ShipEngineSaleTemplate,
+} from "@prisma/client";
 
 type EquipmentDetailsProps = {
   equipmentType: string;
-  equipmentData: ShipEngineSaleTemplate | undefined;
+  equipmentData: ShipEngineSaleTemplate | ShipCargoBaySaleTemplate | undefined;
 };
 
 const EquipmentDetails = ({
@@ -26,17 +29,26 @@ const EquipmentDetails = ({
 
     switch (equipmentType) {
       case "engine":
-        buyShipEngine(
+        buyShipEquipment(
           userData.id,
           userData.credits,
           userData.ship.shipEngine.id,
+          equipmentType,
           equipmentData
         ).then((data) => {
           setUserData(data);
         });
         break;
       case "cargoBay":
-        console.log("cargoBay");
+        buyShipEquipment(
+          userData.id,
+          userData.credits,
+          userData.ship.shipCargoBay.id,
+          equipmentType,
+          equipmentData
+        ).then((data) => {
+          setUserData(data);
+        });
         break;
       case "shields":
         console.log("shields");

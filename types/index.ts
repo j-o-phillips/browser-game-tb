@@ -2,6 +2,7 @@ import {
   Cronresource,
   Market,
   Resource,
+  ShipCargoBaySaleTemplate,
   ShipEngineSaleTemplate,
 } from "@prisma/client";
 
@@ -26,4 +27,5 @@ export type MarketData = Market & {
   resources: Resource[];
   cronResources: Cronresource[];
   shipEngineSaleTemplates: ShipEngineSaleTemplate[];
+  shipCargoBaySaleTemplates: ShipCargoBaySaleTemplate[];
 };

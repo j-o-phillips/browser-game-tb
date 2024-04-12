@@ -5,12 +5,17 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import BuyEngine from "./buyEngine";
 import BuyCargoBay from "./buyCargoBay";
 import { Dispatch, SetStateAction } from "react";
-import { ShipEngineSaleTemplate } from "@prisma/client";
+import {
+  ShipCargoBaySaleTemplate,
+  ShipEngineSaleTemplate,
+} from "@prisma/client";
 
 type BuyEquipmentProps = {
   setEquipmentType: Dispatch<SetStateAction<string>>;
   setEquipmentData: Dispatch<
-    SetStateAction<ShipEngineSaleTemplate | undefined>
+    SetStateAction<
+      ShipEngineSaleTemplate | ShipCargoBaySaleTemplate | undefined
+    >
   >;
 };
 const BuyEquipment = ({
@@ -39,7 +44,10 @@ const BuyEquipment = ({
         </TabsContent>
         <TabsContent value="shields">Coming Soon</TabsContent>
         <TabsContent value="cargoBay">
-          <BuyCargoBay />
+          <BuyCargoBay
+            setEquipmentData={setEquipmentData}
+            setEquipmentType={setEquipmentType}
+          />
         </TabsContent>
       </Tabs>
     </Card>

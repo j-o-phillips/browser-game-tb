@@ -44,6 +44,7 @@ const InOrbit = () => {
           scale={1}
           rotationSpeed={0.02}
           setObjectData={() => {}}
+          unclickable
         />
       </Canvas>
     </div>

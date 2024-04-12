@@ -4,13 +4,16 @@ import PlayerDetails from "@/components/market/marketPlace/playerDetails";
 import ShipEquipment from "@/components/market/shipyard/ShipEquipment";
 import BuyEquipment from "@/components/market/shipyard/buyEquipment";
 import EquipmentDetails from "@/components/market/shipyard/equipmentDetails";
-import { ShipEngineSaleTemplate } from "@prisma/client";
+import {
+  ShipCargoBaySaleTemplate,
+  ShipEngineSaleTemplate,
+} from "@prisma/client";
 import { useState } from "react";
 
 const MarketShipyard = () => {
   const [equipmentType, setEquipmentType] = useState("");
   const [equipmentData, setEquipmentData] = useState<
-    ShipEngineSaleTemplate | undefined
+    ShipEngineSaleTemplate | ShipCargoBaySaleTemplate | undefined
   >();
 
   return (
