@@ -17,6 +17,11 @@ export const getUserById = async (id: string) => {
             },
           },
         },
+        Factories: {
+          include: {
+            resourcesInStock: true,
+          },
+        },
       },
     });
     return user;
@@ -38,6 +43,11 @@ export const getUserByEmail = async (email: string) => {
                 resources: true,
               },
             },
+          },
+        },
+        Factories: {
+          include: {
+            resourcesInStock: true,
           },
         },
       },

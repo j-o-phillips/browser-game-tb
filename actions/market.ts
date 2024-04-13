@@ -19,6 +19,11 @@ export const getAllMarkets = async () => {
         cronResources: true,
         shipEngineSaleTemplates: true,
         shipCargoBaySaleTemplates: true,
+        factories: {
+          include: {
+            resourcesInStock: true,
+          },
+        },
       },
     });
     return markets;
@@ -36,6 +41,11 @@ export const getMarketDataByName = async (name: string) => {
         cronResources: true,
         shipEngineSaleTemplates: true,
         shipCargoBaySaleTemplates: true,
+        factories: {
+          include: {
+            resourcesInStock: true,
+          },
+        },
       },
     });
     return market;
@@ -53,6 +63,11 @@ export const getMarketDataById = async (id: string) => {
         cronResources: true,
         shipEngineSaleTemplates: true,
         shipCargoBaySaleTemplates: true,
+        factories: {
+          include: {
+            resourcesInStock: true,
+          },
+        },
       },
     });
     return market;
@@ -70,6 +85,11 @@ export const getMarketsBySystemId = async (systemId: string) => {
         cronResources: true,
         shipEngineSaleTemplates: true,
         shipCargoBaySaleTemplates: true,
+        factories: {
+          include: {
+            resourcesInStock: true,
+          },
+        },
       },
     });
     return markets;

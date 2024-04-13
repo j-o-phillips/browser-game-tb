@@ -33,5 +33,5 @@ NEXT STAGE:
 
 CV Additions
 - Implemented realtime chat into a game using websockets/ably (game)
-- Increased user satisfaction by adding a building function (kire tree)
+- Increased user satisfaction by adding a building function (kire tree) use konva
 - Stripe integration into classpass style platform (ilo)

@@ -24,7 +24,8 @@ model User {
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
 
-  ship Ship?
+  ship      Ship?
+  Factories Factory[]
 }
 
 model Ship {
@@ -126,6 +127,7 @@ model Market {
   System        System?        @relation(fields: [systemId], references: [id], onDelete: Cascade)
   resources     Resource[]
   cronResources Cronresource[]
+  factories     Factory[]
 
   //Many-Many
   shipEngineSaleTemplates   ShipEngineSaleTemplate[]   @relation(fields: [shipEngineSaleTemplateIDs], references: [id])
@@ -146,9 +148,11 @@ model Resource {
   updatedAt      DateTime @updatedAt
   marketId       String?  @db.ObjectId
   shipCargoBayId String?  @db.ObjectId
+  factoryId      String?  @db.ObjectId
 
   Market       Market?       @relation(fields: [marketId], references: [id], onDelete: Cascade)
   ShipCargoBay ShipCargoBay? @relation(fields: [shipCargoBayId], references: [id], onDelete: Cascade)
+  Factory      Factory?      @relation(fields: [factoryId], references: [id], onDelete: Cascade)
 }
 
 model Cronresource {
@@ -161,4 +165,18 @@ model Cronresource {
   marketId  String?  @db.ObjectId
 
   Market Market? @relation(fields: [marketId], references: [id], onDelete: Cascade)
+}
+
+model Factory {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  productionLines String[] @default([])
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  userId          String   @unique @db.ObjectId
+
+  marketId         String     @unique @db.ObjectId
+  resourcesInStock Resource[]
+
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Market Market @relation(fields: [marketId], references: [id], onDelete: Cascade)
 }

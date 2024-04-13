@@ -1,7 +1,6 @@
 "use client";
 
 import { Canvas, useLoader } from "@react-three/fiber";
-
 import { Stars } from "@react-three/drei";
 import { TextureLoader } from "three";
 import CelestialBody from "@/components/map/system/celestialBody";
@@ -12,7 +11,6 @@ import { useRouter } from "next/navigation";
 const InOrbit = () => {
   const { userData } = useUserContext();
   const router = useRouter();
-  // let textureString = `/planetText/Arubula.jpg`;
 
   useEffect(() => {
     if (!userData) {

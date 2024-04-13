@@ -1,6 +1,13 @@
 "use client";
 
-import { Resource, Ship, ShipCargoBay, ShipEngine, User } from "@prisma/client";
+import {
+  Factory,
+  Resource,
+  Ship,
+  ShipCargoBay,
+  ShipEngine,
+  User,
+} from "@prisma/client";
 import { createContext, useContext, useState } from "react";
 
 type UserData = User & {
@@ -10,6 +17,7 @@ type UserData = User & {
       resources: Resource[];
     };
   };
+  Factories: Factory[];
 };
 export type UserContent = {
   userData: UserData | null;

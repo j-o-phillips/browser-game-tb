@@ -1,5 +1,6 @@
 import {
   Cronresource,
+  Factory,
   Market,
   Resource,
   ShipCargoBaySaleTemplate,
@@ -28,4 +29,5 @@ export type MarketData = Market & {
   cronResources: Cronresource[];
   shipEngineSaleTemplates: ShipEngineSaleTemplate[];
   shipCargoBaySaleTemplates: ShipCargoBaySaleTemplate[];
+  factories: Factory[];
 };

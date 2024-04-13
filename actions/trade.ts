@@ -24,6 +24,7 @@ import {
   ShipEngineSaleTemplate,
 } from "@prisma/client";
 import { updateShipEngineById } from "./shipEngine";
+import { createFactory } from "./factory";
 export const buyResourceSelection = async (
   data: object,
   marketId: string,
@@ -249,6 +250,34 @@ export const buyShipEquipment = async (
     }
     const user = await getUserById(userId);
 
+    return user;
+  } catch (error: any) {
+    return { error: error.message };
+  }
+};
+
+export const buyFactory = async (
+  userId: string,
+  userCredits: number,
+  marketId: string
+) => {
+  const price = 20000;
+
+  //Validations
+  if (!userId || !marketId) return "Invalid data";
+
+  //Check if user has enough credits
+  if (userCredits < price) return "Not enough credits";
+
+  try {
+    //Reduce user credits
+    const newCredits = userCredits - price;
+    await updateUserCredits(userId, newCredits);
+
+    //Add factory to user
+    await createFactory({ userId, marketId });
+
+    const user = await getUserById(userId);
     return user;
   } catch (error: any) {
     return { error: error.message };
