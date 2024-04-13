@@ -20,7 +20,9 @@ const Bridge = () => {
       <div className="row-span-1 h-full  w-full bg-[#00f2ff52] border-2 border-cyan-500">
         <h2>Target Image</h2>
       </div>
-      <div className="">{!userData?.isLanded && <InOrbit />}</div>
+      <div className="">
+        <InOrbit />
+      </div>
       <div className="row-span-2 h-full  w-full bg-[#00f2ff52] border-2 border-cyan-500">
         <h1>Scanner Targets</h1>
       </div>

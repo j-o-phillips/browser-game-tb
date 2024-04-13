@@ -3,41 +3,33 @@
 import { Canvas, useLoader } from "@react-three/fiber";
 import CelestialBody from "../../map/system/celestialBody";
 import { useUserContext } from "@/context/UserContext";
-import { useRouter } from "next/navigation";
-import { TextureLoader } from "three";
+import { useParams, useRouter } from "next/navigation";
+import { TextureLoader } from "three/src/loaders/TextureLoader.js";
 import { useEffect, useState } from "react";
 import { Stars } from "@react-three/drei";
 
 const InOrbit = () => {
-  const { userData } = useUserContext();
-  const router = useRouter();
+  // const { userData } = useUserContext();
+  // const router = useRouter();
+  // let textureString = `/planetText/Arubula.jpg`;
 
-  useEffect(() => {
-    if (!userData) {
-      router.push("/game");
-    }
-  }, [userData, router]); // Ensure useEffect runs when userData or router changes
+  // useEffect(() => {
+  //   if (!userData) {
+  //     router.push("/game");
+  //   }
+  // }, [userData, router]);
 
-  // const texture =
-  //   useLoader(TextureLoader, `/planetText/${userData?.currentLoc}.jpg`);
+  // switch (userData?.currentLoc) {
+  //   case "Arubula":
+  //     textureString = `/planetText/Arubula.jpg`;
+  //     break;
 
-  const [texture, setTexture] = useState<any>(null);
+  //   default:
+  //     break;
+  // }
 
-  useEffect(() => {
-    const fetchTexture = async () => {
-      // Ensure code runs only on the client-side
-      if (typeof window !== "undefined") {
-        // Load texture only on the client-side
-        const textureLoader = new TextureLoader();
-        const loadedTexture = await textureLoader.loadAsync(
-          `/planetText/${userData?.currentLoc}.jpg`
-        );
-        setTexture(loadedTexture);
-      }
-    };
-
-    fetchTexture();
-  }, [userData?.currentLoc]);
+  // const texture = useLoader(TextureLoader, "/planetText/Arubula.jpg");
+  const planet1Map = useLoader(TextureLoader, "/planetText/Arubula.jpg");
 
   return (
     <div className=" bg-black h-full ">
@@ -52,16 +44,16 @@ const InOrbit = () => {
           saturation={0}
           fade
         />
-        <CelestialBody
-          name={userData!.currentLoc}
-          texture={texture}
+        {/* <CelestialBody
+          name="Arubula"
+          texture={planet1Map}
           positionX={-1}
           positionZ={0}
           scale={1}
           rotationSpeed={0.02}
           setObjectData={() => {}}
           unclickable
-        />
+        /> */}
       </Canvas>
     </div>
   );
