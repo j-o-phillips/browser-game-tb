@@ -1,12 +1,12 @@
 "use client";
 
-import { Canvas, useFrame, useLoader } from "@react-three/fiber";
+import { Canvas, useLoader } from "@react-three/fiber";
 import CelestialBody from "../../map/system/celestialBody";
 import { useUserContext } from "@/context/UserContext";
 import { useRouter } from "next/navigation";
-import { TextureLoader, Vector3 } from "three";
-import { useEffect } from "react";
-import { OrbitControls, Stars } from "@react-three/drei";
+import { TextureLoader } from "three";
+import { useEffect, useState } from "react";
+import { Stars } from "@react-three/drei";
 
 const InOrbit = () => {
   const { userData } = useUserContext();
@@ -18,10 +18,26 @@ const InOrbit = () => {
     }
   }, [userData, router]); // Ensure useEffect runs when userData or router changes
 
-  const texture = useLoader(
-    TextureLoader,
-    `/planetText/${userData?.currentLoc}.jpg`
-  );
+  // const texture =
+  //   useLoader(TextureLoader, `/planetText/${userData?.currentLoc}.jpg`);
+
+  const [texture, setTexture] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchTexture = async () => {
+      // Ensure code runs only on the client-side
+      if (typeof window !== "undefined") {
+        // Load texture only on the client-side
+        const textureLoader = new TextureLoader();
+        const loadedTexture = await textureLoader.loadAsync(
+          `/planetText/${userData?.currentLoc}.jpg`
+        );
+        setTexture(loadedTexture);
+      }
+    };
+
+    fetchTexture();
+  }, [userData?.currentLoc]);
 
   return (
     <div className=" bg-black h-full ">

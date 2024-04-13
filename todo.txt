@@ -29,3 +29,9 @@ NEXT STAGE:
 - UPGRADE 
 - MINE 
 - BUILD AND PRODUCE
+
+
+CV Additions
+- Implemented realtime chat into a game using websockets/ably (game)
+- Increased user satisfaction by adding a building function (kire tree)
+- Stripe integration into classpass style platform (ilo)
