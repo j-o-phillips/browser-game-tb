@@ -22,6 +22,8 @@ export type GlobalContextData = {
   canLand: boolean; //deprecated
   mapModalOpen: boolean;
   cargoModalOpen: boolean;
+  dataCenterModalOpen: boolean;
+  currentFactoryData: Factory | null;
 };
 
 export type MarketData = Market & {

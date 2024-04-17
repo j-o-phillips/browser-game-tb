@@ -1,9 +1,7 @@
-"use client";
-
+import { addFactoryProductionLine } from "@/actions/factory";
+import { useGlobalContext } from "@/context/GlobalContext";
 import { useUserContext } from "@/context/UserContext";
-import Card from "@/customUi/Card";
-import { Button } from "../ui/button";
-import { useParams, useRouter } from "next/navigation";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,30 +11,21 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useEffect, useState } from "react";
-import { addFactoryProductionLine } from "@/actions/factory";
-import { Factory } from "@prisma/client";
-import ProductionLineOptions from "./productionLineOptions";
 
-const ProductionLines = () => {
-  const router = useRouter();
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import FacProdLineOptions from "./facProdLineOptions";
+
+const FacProductLines = () => {
   const { userData } = useUserContext();
-  const { marketId } = useParams() as { marketId: string };
-  const [factoryData, setFactoryData] = useState<Factory | null>();
-  const [lineType, setLineType] = useState<string | undefined>();
+  const { globalData, setGlobalData } = useGlobalContext();
 
-  useEffect(() => {
-    const currentFactoryData = userData?.Factories.find(
-      (factory) => factory.marketId === marketId
-    );
-    setFactoryData(currentFactoryData);
-    console.log(currentFactoryData);
-  }, []);
+  const [lineType, setLineType] = useState<string | undefined>();
 
   const handleAddProductionLine = (factoryId: string, newLine: string) => {
     try {
       addFactoryProductionLine(factoryId, newLine).then((data) => {
-        setFactoryData(data);
+        setGlobalData({ ...globalData, currentFactoryData: data });
         console.log(data);
       });
     } catch (error) {
@@ -45,10 +34,10 @@ const ProductionLines = () => {
   };
 
   return (
-    <Card>
+    <>
       <h1>Production Lines</h1>
-      {factoryData?.productionLines.map((line) => (
-        <ProductionLineOptions line={line} key={line} />
+      {globalData.currentFactoryData?.productionLines.map((line) => (
+        <FacProdLineOptions line={line} key={line} />
       ))}
       <div className="flex gap-4">
         <DropdownMenu>
@@ -68,21 +57,16 @@ const ProductionLines = () => {
         </DropdownMenu>
         <Button
           onClick={() => {
-            if (!lineType || !factoryData)
+            if (!lineType || !globalData.currentFactoryData)
               return console.log("no line type selected or no factory data");
-            handleAddProductionLine(factoryData.id, lineType);
+            handleAddProductionLine(globalData.currentFactoryData.id, lineType);
           }}
         >
           Add {lineType} production line
         </Button>
       </div>
-
-      <Button onClick={() => console.log(userData)}>Log user data</Button>
-      <Button onClick={() => router.push(`/game/${userData?.currentLoc}`)}>
-        To Spaceport
-      </Button>
-    </Card>
+    </>
   );
 };
 
-export default ProductionLines;
+export default FacProductLines;

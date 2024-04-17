@@ -3,6 +3,10 @@ TODO:
 - explore ai music companies as well as music tech
 - wordpress course/Revamp CV/ Kire tree
 
+
+
+
+
 - add cargo bay limitations
 - Factories
 

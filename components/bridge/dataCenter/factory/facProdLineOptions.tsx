@@ -1,7 +1,7 @@
 import { allResources, resources } from "@/data/resources";
 import { useEffect, useState } from "react";
 
-const ProductionLineOptions = ({ line }: { line: string }) => {
+const FacProdLineOptions = ({ line }: { line: string }) => {
   const currentResource = allResources.find((r) => r.name === line);
 
   return (
@@ -12,4 +12,4 @@ const ProductionLineOptions = ({ line }: { line: string }) => {
   );
 };
 
-export default ProductionLineOptions;
+export default FacProdLineOptions;

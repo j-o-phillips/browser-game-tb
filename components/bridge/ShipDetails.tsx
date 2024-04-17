@@ -8,6 +8,9 @@ import Card from "@/customUi/Card";
 import { useState } from "react";
 import MapModal from "../map/MapModal";
 import CargoModal from "./cargo/CargoModal";
+import Modal from "@/customUi/Modal";
+import CargoDisplay from "./cargo/CargoDisplay";
+import MainDataScreen from "./dataCenter/mainDataScreen";
 
 const ShipDetails = () => {
   const router = useRouter();
@@ -22,6 +25,12 @@ const ShipDetails = () => {
     setGlobalData({
       ...globalData,
       cargoModalOpen: !globalData.cargoModalOpen,
+    });
+  };
+  const toggleDataCenterModal = () => {
+    setGlobalData({
+      ...globalData,
+      dataCenterModalOpen: !globalData.dataCenterModalOpen,
     });
   };
 
@@ -44,13 +53,19 @@ const ShipDetails = () => {
           <Button disabled onClick={() => router.push("/game/bridge/loadout")}>
             Loadout
           </Button>
-          <Button disabled onClick={() => router.push("/game/bridge/data")}>
-            Data Center
-          </Button>
+          <Button onClick={toggleDataCenterModal}>Data Center</Button>
         </div>
       </Card>
       {globalData.mapModalOpen && <MapModal />}
-      {globalData.cargoModalOpen && <CargoModal />}
+
+      <Modal
+        children={<CargoDisplay />}
+        disabled={!globalData.cargoModalOpen}
+      />
+      <Modal
+        children={<MainDataScreen />}
+        disabled={!globalData.dataCenterModalOpen}
+      />
     </>
   );
 };

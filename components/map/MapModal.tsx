@@ -9,7 +9,7 @@ const MapModal = () => {
 
   return (
     <div
-      className="overlow-hidden absolute top-0 left-0  w-full bg-black"
+      className="overlow-hidden absolute top-0 left-0  w-full bg-black p-6"
       style={{
         height: "100vh",
       }}

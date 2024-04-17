@@ -19,6 +19,8 @@ const GlobalContext = createContext<GlobalContext>({
     canLand: false,
     mapModalOpen: false,
     cargoModalOpen: false,
+    dataCenterModalOpen: false,
+    currentFactoryData: null,
   },
   setGlobalData: () => {},
 });
@@ -36,6 +38,8 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
     canLand: false,
     mapModalOpen: false,
     cargoModalOpen: false,
+    dataCenterModalOpen: false,
+    currentFactoryData: null,
   });
   return (
     <GlobalContext.Provider value={{ globalData, setGlobalData }}>
