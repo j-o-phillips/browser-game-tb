@@ -43,7 +43,11 @@ export const allResources = [
     name: "Fuel",
     amount: defaultCron,
     baseValue: 20,
-    recipe: ["Hydrogen", 10],
+    recipe: {
+      Hydrogen: 10,
+      o2: 10,
+    },
+    timeToProduce: 10,
   },
   {
     name: "Iron",

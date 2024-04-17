@@ -168,15 +168,28 @@ model Cronresource {
 }
 
 model Factory {
-  id              String   @id @default(auto()) @map("_id") @db.ObjectId
-  productionLines String[] @default([])
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-  userId          String   @unique @db.ObjectId
+  id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  marketId         String     @unique @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String   @unique @db.ObjectId
+
+  marketId         String           @unique @db.ObjectId
   resourcesInStock Resource[]
+  productionLines  ProductionLine[]
 
   User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   Market Market @relation(fields: [marketId], references: [id], onDelete: Cascade)
+}
+
+model ProductionLine {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  active    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  factoryId String @unique @db.ObjectId
+
+  Factory Factory @relation(fields: [factoryId], references: [id], onDelete: Cascade)
 }

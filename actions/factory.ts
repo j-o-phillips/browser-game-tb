@@ -8,6 +8,7 @@ export const getAllFactories = async () => {
     const factories = await db.factory.findMany({
       include: {
         resourcesInStock: true,
+        productionLines: true,
       },
     });
     return factories;
@@ -22,6 +23,7 @@ export const getFactoryById = async (id: string) => {
       where: { id },
       include: {
         resourcesInStock: true,
+        productionLines: true,
       },
     });
     return factory;
@@ -62,14 +64,14 @@ export const addFactoryProductionLine = async (
   newLine: string
 ) => {
   try {
-    const factory = await db.factory.update({
-      where: { id: factoryId },
+    await db.productionLine.create({
       data: {
-        productionLines: {
-          push: newLine,
-        },
+        name: newLine,
+        factoryId,
       },
     });
+
+    const factory = await getFactoryById(factoryId);
     return factory;
   } catch (error: any) {
     return error.message;

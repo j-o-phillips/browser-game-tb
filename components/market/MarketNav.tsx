@@ -69,17 +69,13 @@ const MarketNav = () => {
         Shipyard
       </Button>
       {!loading &&
-      userData?.Factories.find(
-        (factory) => factory.marketId === marketData?.id
-      ) ? (
-        <Button
-          onClick={() => router.push(`${marketName}/${marketId}/factory`)}
-        >
-          To Factory
-        </Button>
-      ) : (
-        <Button onClick={handleBuyFactory}>Buy Factory (20000 credits)</Button>
-      )}
+        !userData?.Factories.find(
+          (factory) => factory.marketId === marketData?.id
+        ) && (
+          <Button onClick={handleBuyFactory}>
+            Buy Factory (20000 credits)
+          </Button>
+        )}
 
       <Button onClick={() => router.push("bridge")}>Board Ship</Button>
     </Card>

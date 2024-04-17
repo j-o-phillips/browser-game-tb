@@ -58,14 +58,13 @@ const ShipDetails = () => {
       </Card>
       {globalData.mapModalOpen && <MapModal />}
 
-      <Modal
-        children={<CargoDisplay />}
-        disabled={!globalData.cargoModalOpen}
-      />
-      <Modal
-        children={<MainDataScreen />}
-        disabled={!globalData.dataCenterModalOpen}
-      />
+      <Modal disabled={!globalData.cargoModalOpen}>
+        {" "}
+        <CargoDisplay />
+      </Modal>
+      <Modal disabled={!globalData.dataCenterModalOpen}>
+        <MainDataScreen />
+      </Modal>
     </>
   );
 };

@@ -26,19 +26,6 @@ const MainDataScreen = () => {
           </TabsContent>
         </Tabs>
       </div>
-      <Button onClick={() => console.log(userData)}>Print user data</Button>
-      <Button onClick={() => console.log(globalData)}>Print global data</Button>
-      <Button
-        onClick={() =>
-          setGlobalData({
-            ...globalData,
-            currentFactoryData: null,
-            dataCenterModalOpen: !globalData.dataCenterModalOpen,
-          })
-        }
-      >
-        Close Data Center
-      </Button>
     </Card>
   );
 };

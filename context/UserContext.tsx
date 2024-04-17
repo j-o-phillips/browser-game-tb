@@ -2,6 +2,7 @@
 
 import {
   Factory,
+  ProductionLine,
   Resource,
   Ship,
   ShipCargoBay,
@@ -17,7 +18,7 @@ type UserData = User & {
       resources: Resource[];
     };
   };
-  Factories: Factory[];
+  Factories: (Factory & { productionLines: ProductionLine[] | null })[];
 };
 export type UserContent = {
   userData: UserData | null;

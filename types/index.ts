@@ -2,6 +2,7 @@ import {
   Cronresource,
   Factory,
   Market,
+  ProductionLine,
   Resource,
   ShipCargoBaySaleTemplate,
   ShipEngineSaleTemplate,
@@ -23,7 +24,9 @@ export type GlobalContextData = {
   mapModalOpen: boolean;
   cargoModalOpen: boolean;
   dataCenterModalOpen: boolean;
-  currentFactoryData: Factory | null;
+  currentFactoryData:
+    | (Factory & { productionLines: ProductionLine[] | null })
+    | null;
 };
 
 export type MarketData = Market & {

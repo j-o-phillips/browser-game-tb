@@ -20,6 +20,7 @@ export const getUserById = async (id: string) => {
         Factories: {
           include: {
             resourcesInStock: true,
+            productionLines: true,
           },
         },
       },
@@ -48,6 +49,7 @@ export const getUserByEmail = async (email: string) => {
         Factories: {
           include: {
             resourcesInStock: true,
+            productionLines: true,
           },
         },
       },

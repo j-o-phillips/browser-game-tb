@@ -17,7 +17,7 @@ import { Button } from "@/components/ui/button";
 import FacProdLineOptions from "./facProdLineOptions";
 
 const FacProductLines = () => {
-  const { userData } = useUserContext();
+  const { userData, setUserData } = useUserContext();
   const { globalData, setGlobalData } = useGlobalContext();
 
   const [lineType, setLineType] = useState<string | undefined>();
@@ -26,7 +26,17 @@ const FacProductLines = () => {
     try {
       addFactoryProductionLine(factoryId, newLine).then((data) => {
         setGlobalData({ ...globalData, currentFactoryData: data });
-        console.log(data);
+        //set factory in user data with new production line
+        if (!userData?.Factories) return console.log("no user data");
+        setUserData({
+          ...userData,
+          Factories: userData?.Factories.map((factory) => {
+            if (factory.id === factoryId) {
+              factory = data;
+            }
+            return factory;
+          }),
+        });
       });
     } catch (error) {
       console.log(error);
@@ -36,8 +46,8 @@ const FacProductLines = () => {
   return (
     <>
       <h1>Production Lines</h1>
-      {globalData.currentFactoryData?.productionLines.map((line) => (
-        <FacProdLineOptions line={line} key={line} />
+      {globalData.currentFactoryData?.productionLines?.map((line) => (
+        <FacProdLineOptions line={line} key={line.id} />
       ))}
       <div className="flex gap-4">
         <DropdownMenu>
